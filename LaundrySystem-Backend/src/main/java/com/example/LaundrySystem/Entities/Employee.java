@@ -1,6 +1,7 @@
 package com.example.LaundrySystem.Entities;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -20,6 +22,7 @@ import java.util.ArrayList;
                 @UniqueConstraint(columnNames = {"phoneNumber"})
         }
 )
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Employee {
     @Id
     private String userName;
@@ -37,19 +40,19 @@ public class Employee {
     private LocalTime startShiftTime;
     @Column
     private LocalTime endShiftTime;
-
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE)
+    private List<EmployeeTask> tasks= new ArrayList<>();
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE)
+    private List<EmployeeHoliday> holidays= new ArrayList<>();
 
     public Employee(){}
 
-    public Employee(String userName, String password, String phoneNumber, String email, boolean isManager, double salary, LocalTime startSh, LocalTime endSh) {
+    public Employee(String userName, String password, String phoneNumber, String email, boolean isManager) {
         this.userName = userName;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.isManager = isManager;
-        this.salary = salary;
-        this.startShiftTime = startSh;
-        this.endShiftTime = endSh;
     }
 
     public String getUserName() {

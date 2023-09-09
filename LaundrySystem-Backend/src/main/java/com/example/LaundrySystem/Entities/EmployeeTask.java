@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Employee_Tasks")
+@IdClass(TaskPrimaryKey.class)
 public class EmployeeTask {
     @Id
     @ManyToOne

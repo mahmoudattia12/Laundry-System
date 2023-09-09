@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Employee_Holidays")
+@IdClass(HolidayPrimaryKey.class)
 public class EmployeeHoliday {
     @Id
     @ManyToOne

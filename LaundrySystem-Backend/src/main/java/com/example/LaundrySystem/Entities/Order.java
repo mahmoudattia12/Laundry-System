@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int ID;
+    Integer ID;
     @Column(nullable = false)
     private String currState;
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
