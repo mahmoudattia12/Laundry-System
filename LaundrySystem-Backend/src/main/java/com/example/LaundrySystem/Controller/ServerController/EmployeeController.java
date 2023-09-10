@@ -2,8 +2,14 @@ package com.example.LaundrySystem.Controller.ServerController;
 
 import com.example.LaundrySystem.Controller.ServiceProvider.EmployeeServices;
 import com.example.LaundrySystem.Entities.Employee;
+import com.example.LaundrySystem.Entities.EmployeeHoliday;
+import com.example.LaundrySystem.Entities.EmployeeTask;
+import com.example.LaundrySystem.Repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/emp")
@@ -41,6 +47,16 @@ public class EmployeeController {
     public String delete(@PathVariable String deleterID, @PathVariable String toDeleteID){
         return employeeServices.delete(deleterID, toDeleteID);
     }
+    @GetMapping("/getAll")
+    public List<Employee> getAll(){
+        System.out.println("hi from get all");
+        return employeeServices.getAllEmployees();
+    }
+
+    @GetMapping("/getByID/{empID}")
+    public Employee getByID(@PathVariable String empID){
+        return employeeServices.getByID(empID);
+    }
 
     @PostMapping("/addTask")
     public String addTask(@RequestParam("adderID") String adderID, @RequestParam("addForID") String addForID, @RequestParam("task") String task){
@@ -62,6 +78,16 @@ public class EmployeeController {
         return employeeServices.deleteByHelper(deleterID, deleteForID, task, true);
     }
 
+    @GetMapping("/getAllTasks")
+    public List<EmployeeTask> getAllTasks(){
+        return employeeServices.getAllTasks();
+    }
+
+    @GetMapping("/getTasksByID/{empID}")
+    public List<String> getTasksByID(@PathVariable String empID){
+        return employeeServices.getTasksByID(empID);
+    }
+
     @PostMapping("/addHoliday")
     public String addHoliday(@RequestParam("adderID") String adderID, @RequestParam("addForID") String addForID, @RequestParam("holiday") String holiday){
         return employeeServices.addByHelper(adderID, addForID, holiday, false);
@@ -75,5 +101,15 @@ public class EmployeeController {
     @DeleteMapping("/deleteHoliday/{deleterID}/{deleteForID}/{Holiday}")
     public String deleteHoliday(@PathVariable String deleterID, @PathVariable String deleteForID, @PathVariable String Holiday){
         return employeeServices.deleteByHelper(deleterID, deleteForID, Holiday, false);
+    }
+
+    @GetMapping("/getAllHolidays")
+    public List<EmployeeHoliday> getAllHolidays(){
+        return employeeServices.getAllHolidays();
+    }
+
+    @GetMapping("/getHolidaysByID/{empID}")
+    public List<String> getHolidaysByID(@PathVariable String empID){
+        return employeeServices.getHolidaysByID(empID);
     }
 }

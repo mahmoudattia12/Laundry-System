@@ -1,6 +1,7 @@
 package com.example.LaundrySystem.Entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.persistence.*;
@@ -41,8 +42,10 @@ public class Employee {
     @Column
     private LocalTime endShiftTime;
     @OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE)
+    @JsonIgnore //to break the circular reference
     private List<EmployeeTask> tasks= new ArrayList<>();
     @OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE)
+    @JsonIgnore //to break the circular reference
     private List<EmployeeHoliday> holidays= new ArrayList<>();
 
     public Employee(){}
@@ -95,11 +98,11 @@ public class Employee {
         isManager = manager;
     }
 
-    public double getSalary() {
+    public Double getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 
@@ -119,12 +122,34 @@ public class Employee {
         this.endShiftTime = endShiftTime;
     }
 
-    public ArrayList<String> getTasks() {
-        return new ArrayList<>();
+    public List<EmployeeTask> getTasks() {
+        return tasks;
     }
 
-    public ArrayList<String> getHolidays() {
-        return new ArrayList<>();
+    public List<String> getTasksMessages(){
+        List<String> messages = new ArrayList<>();
+        for (EmployeeTask t: tasks) {
+            messages.add(t.getTask());
+        }
+        return messages;
     }
 
+    public void setTasks(List<EmployeeTask> tasks) {
+        this.tasks = tasks;
+    }
+
+    public List<EmployeeHoliday> getHolidays() {
+        return holidays;
+    }
+
+    public List<String> getHolidayMessages(){
+        List<String> messages = new ArrayList<>();
+        for (EmployeeHoliday h: holidays) {
+            messages.add(h.getHoliday());
+        }
+        return messages;
+    }
+    public void setHolidays(List<EmployeeHoliday> holidays) {
+        this.holidays = holidays;
+    }
 }

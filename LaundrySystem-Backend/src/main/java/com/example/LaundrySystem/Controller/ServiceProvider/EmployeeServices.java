@@ -44,17 +44,25 @@ package com.example.LaundrySystem.Controller.ServiceProvider;
 
 import com.example.LaundrySystem.Controller.ServiceProvider.EmployeeHelper.HelperFactory;
 import com.example.LaundrySystem.Entities.Employee;
+import com.example.LaundrySystem.Entities.EmployeeHoliday;
+import com.example.LaundrySystem.Entities.EmployeeTask;
 import com.example.LaundrySystem.Repositories.EmployeeHolidayRepository;
 import com.example.LaundrySystem.Repositories.EmployeeRepository;
+import com.example.LaundrySystem.Repositories.EmployeeTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class EmployeeServices {
     @Autowired
     private EmployeeRepository empRepo;
+    @Autowired
+    private EmployeeTaskRepository empTaskRepo;
+    @Autowired
+    private EmployeeHolidayRepository empHolidayRepo;
     @Autowired
     private HelperFactory helperFactory;
     public String signup(String[] emp, boolean isManager) {
@@ -96,7 +104,7 @@ public class EmployeeServices {
             if(permission.equals("A")){
                 Optional<Employee> toUpdate = empRepo.findById(toUpdateID);
                 if(toUpdate.isPresent()){
-                    if(newEmployee.getUserName().equals(toUpdateID)){
+                    if(newEmployee.getUserName().equalsIgnoreCase(toUpdateID)){
                         empRepo.save(newEmployee);
                         return "SUCCESS";
                     }else{
@@ -124,6 +132,24 @@ public class EmployeeServices {
             }else return permission;
         }catch (Exception e){
             return e.getMessage();
+        }
+    }
+    public List<Employee> getAllEmployees(){
+        try {
+            return empRepo.findAll();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    public Employee getByID(String ID){
+        try {
+            Optional<Employee> emp = empRepo.findById(ID);
+            if(emp.isPresent()) return emp.get();
+            else return null;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 
@@ -178,11 +204,55 @@ public class EmployeeServices {
             return e.getMessage();
         }
     }
+    public List<EmployeeTask> getAllTasks(){
+        try {
+            return empTaskRepo.findAll();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    public List<String> getTasksByID(String empID){
+        try {
+            Optional<Employee> emp = empRepo.findById(empID);
+            if(emp.isPresent()){
+                return emp.get().getTasksMessages();
+            }
+            return null;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    public List<EmployeeHoliday> getAllHolidays(){
+        try {
+            return empHolidayRepo.findAll();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+    public List<String> getHolidaysByID(String empID){
+        try {
+            Optional<Employee> emp = empRepo.findById(empID);
+            if(emp.isPresent()){
+                return emp.get().getHolidayMessages();
+            }
+            return null;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
     private String isAllowed(String empID){
-        Optional<Employee> emp = empRepo.findById(empID);
-        if(emp.isPresent()){
-            if(emp.get().isManager()) return "A";
-            else return "Not Allowed";
-        }else return "Manager Not Found";
+        try {
+            Optional<Employee> emp = empRepo.findById(empID);
+            if(emp.isPresent()){
+                if(emp.get().isManager()) return "A";
+                else return "Not Allowed";
+            }else return "Manager Not Found";
+        }catch (Exception e) {
+            return e.getMessage();
+        }
     }
 }
