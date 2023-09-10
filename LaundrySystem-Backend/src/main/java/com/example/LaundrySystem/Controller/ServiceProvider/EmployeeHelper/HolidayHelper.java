@@ -8,11 +8,10 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class HolidayHelper implements IHelper{
+public class HolidayHelper implements IHelper {
     @Autowired
     EmployeeHolidayRepository empHolidayRepo;
 
-    @Override
     public String add(Employee addFor, String toAdd) {
         HolidayPrimaryKey holidayPK = new HolidayPrimaryKey(addFor, toAdd);
         Optional<EmployeeHoliday> checkHoliday = empHolidayRepo.findById(holidayPK);
@@ -25,7 +24,6 @@ public class HolidayHelper implements IHelper{
         }
     }
 
-    @Override
     public String update(Employee updateFor, String prev, String updateWith) {
         HolidayPrimaryKey holidayPK = new HolidayPrimaryKey(updateFor, prev);
         Optional<EmployeeHoliday> checkHoliday = empHolidayRepo.findById(holidayPK);
@@ -39,7 +37,6 @@ public class HolidayHelper implements IHelper{
         }
     }
 
-    @Override
     public String delete(Employee deleteFor, String toDelete) {
         HolidayPrimaryKey holidayPK = new HolidayPrimaryKey(deleteFor, toDelete);
         Optional<EmployeeHoliday> checkHoliday = empHolidayRepo.findById(holidayPK);

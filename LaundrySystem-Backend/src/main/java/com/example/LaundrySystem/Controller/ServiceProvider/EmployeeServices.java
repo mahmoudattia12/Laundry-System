@@ -43,13 +43,9 @@
 package com.example.LaundrySystem.Controller.ServiceProvider;
 
 import com.example.LaundrySystem.Controller.ServiceProvider.EmployeeHelper.HelperFactory;
-import com.example.LaundrySystem.Controller.ServiceProvider.EmployeeHelper.IHelper;
 import com.example.LaundrySystem.Entities.Employee;
-import com.example.LaundrySystem.Entities.EmployeeTask;
-import com.example.LaundrySystem.Entities.TaskPrimaryKey;
 import com.example.LaundrySystem.Repositories.EmployeeHolidayRepository;
 import com.example.LaundrySystem.Repositories.EmployeeRepository;
-import com.example.LaundrySystem.Repositories.EmployeeTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +56,7 @@ public class EmployeeServices {
     @Autowired
     private EmployeeRepository empRepo;
     @Autowired
-    EmployeeHolidayRepository empHolidayRepo;
+    private HelperFactory helperFactory;
     public String signup(String[] emp, boolean isManager) {
         try {
             Optional<Employee> checkEmp = empRepo.findById(emp[0]);
@@ -138,7 +134,8 @@ public class EmployeeServices {
                 Optional<Employee> addFor = empRepo.findById(addForID);
                 if(addFor.isPresent()){
                     Employee emp = addFor.get();
-                    return new HelperFactory().getHelper(helperType).add(emp, toAdd);
+
+                    return helperFactory.getHelper(helperType).add(emp, toAdd);
                 }else{
                     return "AddFor Not Found";
                 }
@@ -155,7 +152,7 @@ public class EmployeeServices {
                 Optional<Employee> updateFor = empRepo.findById(updateForID);
                 if(updateFor.isPresent()){
                     Employee emp = updateFor.get();
-                    return new HelperFactory().getHelper(helperType).update(emp, old, updateWith);
+                    return helperFactory.getHelper(helperType).update(emp, old, updateWith);
                 }else{
                     return "UpdateFor Not Found";
                 }
@@ -172,7 +169,7 @@ public class EmployeeServices {
                 Optional<Employee> deleteFor = empRepo.findById(deleteForID);
                 if(deleteFor.isPresent()){
                     Employee emp = deleteFor.get();
-                    return new HelperFactory().getHelper(helperType).delete(emp, toDelete);
+                    return helperFactory.getHelper(helperType).delete(emp, toDelete);
                 }else{
                     return "UpdateFor Not Found";
                 }
