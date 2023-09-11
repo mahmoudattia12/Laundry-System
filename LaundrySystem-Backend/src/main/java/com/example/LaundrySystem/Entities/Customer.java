@@ -1,8 +1,11 @@
 package com.example.LaundrySystem.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Formula;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(
@@ -20,11 +23,15 @@ public class Customer {
     private String name;
     @Column
     private String address;
-    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    @Column(nullable = false)
     private boolean isGoldCustomer;
     @Column(nullable = false, columnDefinition = "DOUBLE DEFAULT 0.0")
     private double totalPays;
 
+    @OneToMany(mappedBy = "customer")
+    @JsonIgnore
+    private List<Order> orders = new ArrayList<>();
+    private final double goldenPaysLimit = 1000;
     public Customer(){}
     public Customer(String phoneNumber, String email, String name, String address, boolean isGoldCustomer, double totalPays) {
         this.phoneNumber = phoneNumber;
@@ -67,24 +74,21 @@ public class Customer {
         this.address = address;
     }
 
-    public boolean isGoldCustomer() {
-        return isGoldCustomer;
-    }
-
-    public void setGoldCustomer(boolean goldCustomer) {
-        isGoldCustomer = goldCustomer;
-    }
-
     public double getTotalPays() {
+        if(totalPays >= goldenPaysLimit) isGoldCustomer = true; else isGoldCustomer = false;
         return totalPays;
     }
 
     public void setTotalPays(double totalPays) {
         this.totalPays = totalPays;
+        if(totalPays >= goldenPaysLimit) isGoldCustomer = true; else isGoldCustomer = false;
     }
 
-    public ArrayList<Order> getOrders(){
-        return new ArrayList<>();
+    public List<Order> getOrders() {
+        return orders;
     }
 
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 }

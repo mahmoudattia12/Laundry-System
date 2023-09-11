@@ -17,7 +17,7 @@ public class EmployeeController {
     @Autowired
     private EmployeeServices employeeServices;
 
-    @PostMapping("managerSignup")
+    @PostMapping("/managerSignup")
     public String managerSignup(@RequestBody String[] emp){
         System.out.println("hi from managerSignup");
         return employeeServices.signup(emp, true);
@@ -49,7 +49,6 @@ public class EmployeeController {
     }
     @GetMapping("/getAll")
     public List<Employee> getAll(){
-        System.out.println("hi from get all");
         return employeeServices.getAllEmployees();
     }
 

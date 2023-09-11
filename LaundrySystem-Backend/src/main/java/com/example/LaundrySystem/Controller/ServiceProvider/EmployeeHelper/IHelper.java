@@ -3,6 +3,8 @@ package com.example.LaundrySystem.Controller.ServiceProvider.EmployeeHelper;
 import com.example.LaundrySystem.Entities.Employee;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 public interface IHelper {
     public String add(Employee addFor, String toAdd);
     public String update(Employee updateFor, String prev, String updateWith);

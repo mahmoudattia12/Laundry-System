@@ -32,6 +32,10 @@ public class OrderItem {
         this.discount = discount;
     }
 
+    public ItemPrimaryKey getPK(){
+        return new ItemPrimaryKey(order, type, serviceCategory);
+    }
+
     public Order getOrder() {
         return order;
     }

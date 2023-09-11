@@ -6,6 +6,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
 @EqualsAndHashCode
@@ -46,5 +47,14 @@ public class ItemPrimaryKey implements Serializable {
 
     public void setServiceCategory(String serviceCategory) {
         this.serviceCategory = serviceCategory;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemPrimaryKey that = (ItemPrimaryKey) o;
+        return Objects.equals(order, that.order) &&
+                Objects.equals(type, that.type) &&
+                Objects.equals(serviceCategory, that.serviceCategory);
     }
 }

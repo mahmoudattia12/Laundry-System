@@ -1,9 +1,11 @@
 package com.example.LaundrySystem.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Orders")
@@ -27,6 +29,14 @@ public class Order {
     private Customer customer;
     @Column
     private String alternatePhone;
+
+    @OneToMany(mappedBy = "order",cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<OrderItem> items = new ArrayList<>();
+
+    @OneToMany(mappedBy = "order",cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<OrderNote> notes = new ArrayList<>();
 
     public Order(){}
 
@@ -83,6 +93,11 @@ public class Order {
     }
 
     public double getTotalPrice() {
+        //here calculate it : totalPrice = sigma for all items(itemPrice * numberOfItems * ((100 - discount)/100))
+        totalPrice = 0;
+        for(OrderItem orderItem : items){
+            totalPrice += (orderItem.getPrice() * orderItem.getNumber() *((100-orderItem.getDiscount())/100));
+        }
         return totalPrice;
     }
 
@@ -104,5 +119,29 @@ public class Order {
 
     public void setAlternatePhone(String alternatePhone) {
         this.alternatePhone = alternatePhone;
+    }
+
+    public List<OrderItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderItem> items) {
+        this.items = items;
+    }
+
+    public List<OrderNote> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<OrderNote> notes) {
+        this.notes = notes;
+    }
+
+    public List<String> getNotesMessages(){
+        List<String> messages = new ArrayList<>();
+        for (OrderNote orderNote: notes) {
+            messages.add(orderNote.getNote());
+        }
+        return messages;
     }
 }
