@@ -12,7 +12,7 @@ public class SortCustomer <T extends Comparable<T>> implements ISorterStrategy {
     @Autowired
     CustomerRepository customerRepo;
     @Override
-    public List<T> sort(String sortBy, boolean order) {
+    public List<Customer> sort(String sortBy, boolean order) {
         switch (sortBy){
             case "name":
                 if(order) return customerRepo.findAllByOrderByNameAsc(); else return customerRepo.findAllByOrderByNameDesc();

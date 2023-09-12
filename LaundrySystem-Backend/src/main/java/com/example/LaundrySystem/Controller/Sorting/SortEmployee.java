@@ -13,7 +13,7 @@ public class SortEmployee <T extends Comparable<T>> implements ISorterStrategy {
     EmployeeRepository empRepo;
 
     @Override
-    public List<T> sort(String sortBy, boolean order) {
+    public List<Employee> sort(String sortBy, boolean order) {
         switch (sortBy){
             case "userName":
                 if(order) return empRepo.findAllByOrderByUserNameAsc(); else return empRepo.findAllByOrderByUserNameDesc();

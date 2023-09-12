@@ -12,7 +12,7 @@ public class SortOrder <T extends Comparable<T>> implements ISorterStrategy {
     @Autowired
     OrderRepository orderRepo;
     @Override
-    public List<T> sort(String sortBy, boolean order) {
+    public List<Order> sort(String sortBy, boolean order) {
         switch (sortBy){
             case "ID":
                 if(order) return orderRepo.findAllByOrderByIDAsc(); else return orderRepo.findAllByOrderByIDDesc();
