@@ -30,8 +30,9 @@ public interface CustomerRepository <T extends Comparable<T>> extends JpaReposit
     List<Customer> findByAddress(String address);
     @Query("SELECT c FROM Customer c WHERE CAST(c.isGoldCustomer AS string) = :isGoldCustomer")
     List<Customer> findByIsGoldCustomer(@Param("isGoldCustomer") String isGoldCustomer);
-    @Query("SELECT c FROM Customer c WHERE CAST(c.totalPays AS string) = :totalPays")
-    List<Customer> findByTotalPays(@Param("totalPays") String totalPays);
+    //@Query("SELECT c FROM Customer c WHERE CAST(c.totalPays AS string) = :totalPays")
+    //List<Customer> findByTotalPays(@Param("totalPays") String totalPays);
+    List<Customer> findByTotalPays(double totalPays);
 
     //search
     @Query("SELECT c FROM Customer c WHERE " +
@@ -39,8 +40,18 @@ public interface CustomerRepository <T extends Comparable<T>> extends JpaReposit
             "c.email LIKE %:partialInput% OR " +
             "c.phoneNumber LIKE %:partialInput% OR " +
             "c.address LIKE %:partialInput% OR " +
+            "CAST(c.isGoldCustomer AS string) LIKE %:partialInput% OR " +
+            "c.totalPays = :number")
+    List<Customer> findByAttributesContaining(@Param("partialInput") String partialInput, @Param("number") double number);
+    @Query("SELECT c FROM Customer c WHERE " +
+            "c.name LIKE %:partialInput% OR " +
+            "c.email LIKE %:partialInput% OR " +
+            "c.phoneNumber LIKE %:partialInput% OR " +
+            "c.address LIKE %:partialInput% OR " +
+            "CAST(c.isGoldCustomer AS string) LIKE %:partialInput% OR " +
             "CAST(c.totalPays AS string) LIKE %:partialInput%")
     List<Customer> findByAttributesContaining(@Param("partialInput") String partialInput);
+
 
 
 }

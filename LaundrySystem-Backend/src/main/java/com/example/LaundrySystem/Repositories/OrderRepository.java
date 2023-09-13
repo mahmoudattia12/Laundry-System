@@ -39,8 +39,9 @@ public interface OrderRepository <T extends Comparable<T>> extends JpaRepository
     List<Order> findByStartDate(@Param("startDate")String startDate);
     @Query("SELECT o FROM Order o WHERE CAST(o.endDate AS string) = :endDate")
     List<Order> findByEndDate(@Param("endDate")String endDate);
-    @Query("SELECT o FROM Order o WHERE CAST(o.totalPrice AS string) = :totalPrice")
-    List<Order> findByTotalPrice(@Param("totalPrice")String totalPrice);
+//    @Query("SELECT o FROM Order o WHERE CAST(o.totalPrice AS string) = :totalPrice")
+//    List<Order> findByTotalPrice(@Param("totalPrice")String totalPrice);
+    List<Order> findByTotalPrice(double totalPrice);
     List<Order> findByAlternatePhone(String alternatePhone);
     List<Order> findByCustomerPhoneNumber(String customerPhoneNumber);
 
@@ -51,7 +52,19 @@ public interface OrderRepository <T extends Comparable<T>> extends JpaRepository
             "o.alternatePhone LIKE %:partialInput% OR " +
             "o.customer.phoneNumber LIKE %:partialInput% OR " +
             "CAST(o.totalPrice AS string) LIKE %:partialInput% OR " +
+            "CAST(o.isDelivery AS string) LIKE %:partialInput% OR " +
             "CAST(o.startDate AS string) LIKE %:partialInput% OR " +
             "CAST(o.endDate AS string) LIKE %:partialInput%")
     List<Order> findByAttributesContaining(@Param("partialInput") String partialInput);
+
+    @Query("SELECT o FROM Order o WHERE " +
+            "CAST(o.ID AS string) LIKE %:partialInput% OR " +
+            "o.currState LIKE %:partialInput% OR " +
+            "o.alternatePhone LIKE %:partialInput% OR " +
+            "o.customer.phoneNumber LIKE %:partialInput% OR " +
+            "o.totalPrice LIKE %:number% OR " +
+            "CAST(o.isDelivery AS string) LIKE %:partialInput% OR " +
+            "CAST(o.startDate AS string) LIKE %:partialInput% OR " +
+            "CAST(o.endDate AS string) LIKE %:partialInput%")
+    List<Order> findByAttributesContaining(@Param("partialInput") String partialInput, @Param("number") double number);
 }

@@ -31,8 +31,9 @@ public interface EmployeeRepository <T extends Comparable<T>> extends JpaReposit
     List<Employee> findByPhoneNumber(String phoneNumber);
     @Query("SELECT e FROM Employee e WHERE CAST(e.isManager AS string) = :isManager")
     List<Employee> findByIsManager(@Param("isManager") String isManager);
-    @Query("SELECT e FROM Employee e WHERE CAST(e.salary AS string) = :salary")
-    List<Employee> findBySalary(@Param("salary") String salary);
+//    @Query("SELECT e FROM Employee e WHERE CAST(e.salary AS string) = :salary")
+//    List<Employee> findBySalary(@Param("salary") String salary);
+    List<Employee> findBySalary(Double salary);
     @Query("SELECT e FROM Employee e WHERE CAST(e.startShiftTime AS string) = :startShiftTime")
     List<Employee> findByStartShiftTime(@Param("startShiftTime") String startShiftTime);
     @Query("SELECT e FROM Employee e WHERE CAST(e.endShiftTime AS string) = :endShiftTime")
@@ -44,6 +45,7 @@ public interface EmployeeRepository <T extends Comparable<T>> extends JpaReposit
             "e.userName LIKE %:partialInput% OR " +
             "e.email LIKE %:partialInput% OR " +
             "e.phoneNumber LIKE %:partialInput% OR " +
+            "CAST (e.isManager AS string) LIKE %:partialInput% OR " +
             "CAST(e.salary AS string) LIKE %:partialInput% OR " +
             "CAST(e.startShiftTime AS string) LIKE %:partialInput% OR " +
             "CAST(e.endShiftTime AS string) LIKE %:partialInput%")

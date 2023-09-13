@@ -17,7 +17,7 @@ public class FilterEmployees <T extends Comparable<T>> implements IFilter {
             case "userName" -> empRepo.findByUserName(toMeet);
             case "phoneNumber" -> empRepo.findByPhoneNumber(toMeet);
             case "email" -> empRepo.findByEmail(toMeet);
-            case "salary" -> empRepo.findBySalary(toMeet);
+            case "salary" -> empRepo.findBySalary(Double.parseDouble(toMeet));
             case "startShift" -> empRepo.findByStartShiftTime(toMeet);
             case "endShift" -> empRepo.findByEndShiftTime(toMeet);
             case "isManager" -> empRepo.findByIsManager(toMeet);

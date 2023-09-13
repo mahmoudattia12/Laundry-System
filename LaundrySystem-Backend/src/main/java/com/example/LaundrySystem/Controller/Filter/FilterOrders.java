@@ -16,7 +16,7 @@ public class FilterOrders<T extends Comparable<T>> implements IFilter{
         return switch (criteria) {
             case "ID" -> orderRepo.findByID(toMeet);
             case "customerPhone" -> orderRepo.findByCustomerPhoneNumber(toMeet);
-            case "price" -> orderRepo.findByTotalPrice(toMeet);
+            case "price" -> orderRepo.findByTotalPrice(Double.parseDouble(toMeet));
             case "alternatePhone" -> orderRepo.findByAlternatePhone(toMeet);
             case "startDate" -> orderRepo.findByStartDate(toMeet);
             case "endDate" -> orderRepo.findByEndDate(toMeet);

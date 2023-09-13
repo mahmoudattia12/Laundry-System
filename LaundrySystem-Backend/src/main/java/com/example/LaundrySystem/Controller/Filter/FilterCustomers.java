@@ -18,7 +18,7 @@ public class FilterCustomers <T extends Comparable<T>> implements IFilter {
             case "email" -> customerRepo.findByEmail(toMeet);
             case "phoneNumber" -> customerRepo.findByPhoneNumber(toMeet);
             case "address" -> customerRepo.findByAddress(toMeet);
-            case "totalPays" -> customerRepo.findByTotalPays(toMeet);
+            case "totalPays" -> customerRepo.findByTotalPays(Double.parseDouble(toMeet));
             case "isGold" -> customerRepo.findByIsGoldCustomer(toMeet);
             case "search" -> customerRepo.findByAttributesContaining(toMeet);
             default -> null;
