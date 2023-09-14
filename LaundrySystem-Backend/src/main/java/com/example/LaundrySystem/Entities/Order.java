@@ -148,4 +148,12 @@ public class Order {
         }
         return messages;
     }
+
+    public Laundry getLaundry() {
+        return laundry;
+    }
+
+    public void setLaundry(Laundry laundry) {
+        this.laundry = laundry;
+    }
 }

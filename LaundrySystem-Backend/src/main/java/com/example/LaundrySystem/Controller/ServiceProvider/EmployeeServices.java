@@ -46,9 +46,11 @@ import com.example.LaundrySystem.Controller.ServiceProvider.EmployeeHelper.Helpe
 import com.example.LaundrySystem.Entities.Employee;
 import com.example.LaundrySystem.Entities.EmployeeHoliday;
 import com.example.LaundrySystem.Entities.EmployeeTask;
+import com.example.LaundrySystem.Entities.Laundry;
 import com.example.LaundrySystem.Repositories.EmployeeHolidayRepository;
 import com.example.LaundrySystem.Repositories.EmployeeRepository;
 import com.example.LaundrySystem.Repositories.EmployeeTaskRepository;
+import com.example.LaundrySystem.Repositories.LaundryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,16 +66,27 @@ public class EmployeeServices {
     @Autowired
     private EmployeeHolidayRepository empHolidayRepo;
     @Autowired
+    private LaundryRepository laundryRepo;
+    @Autowired
     private HelperFactory helperFactory;
-    public String signup(String[] emp, boolean isManager) {
+    public String signup(Employee emp) {
         try {
-            Optional<Employee> checkEmp = empRepo.findById(emp[0]);
+            Optional<Employee> checkEmp = empRepo.findById(emp.getUserName());
             if(checkEmp.isPresent()){
                 return "ALREADY EXISTS";
             }else{
-                Employee employee = new Employee(emp[0], emp[1], emp[2], emp[3], isManager);
-                empRepo.save(employee);
-                return "SUCCESS";
+                if(emp.getUserName().equalsIgnoreCase("SystemAdmin")
+                  && emp.getPassword().equals("$$$system&&&admin&&&system$$$")){
+                    emp.setManager(true);
+                }
+                Optional<Laundry> checkLaundry = laundryRepo.findById(emp.getLaundry().getName());
+                if(checkLaundry.isPresent()){
+                    emp.setLaundry(checkLaundry.get());
+                    empRepo.save(emp);
+                    return "SUCCESS";
+                }else{
+                    return "Laundry Not Found";
+                }
             }
         }catch (Exception e) {
             System.out.println(e.getMessage());
@@ -81,11 +94,11 @@ public class EmployeeServices {
         }
     }
 
-    public String login(String userName, String password){
+    public String login(Employee employee){
         try {
-            Optional<Employee> emp = empRepo.findById(userName);
+            Optional<Employee> emp = empRepo.findById(employee.getUserName());
             if(emp.isPresent()){
-                if(emp.get().getPassword().equals(password)){
+                if(emp.get().getPassword().equals(employee.getPassword())){
                     return "SUCCESS";
                 }else{
                     return "INCORRECT";

@@ -52,6 +52,7 @@ public class Employee {
     @JoinColumn(name = "laundry_name", nullable = false)
     private Laundry laundry;
 
+
     public Employee(){}
 
     public Employee(String userName, String password, String phoneNumber, String email, boolean isManager) {
@@ -155,5 +156,12 @@ public class Employee {
     }
     public void setHolidays(List<EmployeeHoliday> holidays) {
         this.holidays = holidays;
+    }
+    public Laundry getLaundry() {
+        return laundry;
+    }
+
+    public void setLaundry(Laundry laundry) {
+        this.laundry = laundry;
     }
 }

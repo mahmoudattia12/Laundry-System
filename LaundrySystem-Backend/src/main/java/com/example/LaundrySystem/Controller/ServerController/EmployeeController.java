@@ -17,22 +17,16 @@ public class EmployeeController {
     @Autowired
     private EmployeeServices employeeServices;
 
-    @PostMapping("/managerSignup")
-    public String managerSignup(@RequestBody String[] emp){
-        System.out.println("hi from managerSignup");
-        return employeeServices.signup(emp, true);
-    }
-
     @PostMapping("/signup")
-    public String signup(@RequestBody String[] emp) {
+    public String signup(@RequestBody Employee emp) {
         System.out.println("hi from signup");
-        return employeeServices.signup(emp, false);
+        return employeeServices.signup(emp);
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam("userName") String userName, @RequestParam("password") String password){
+    public String login(@RequestBody Employee emp){
         System.out.println("hi from login");
-        return employeeServices.login(userName, password);
+        return employeeServices.login(emp);
     }
 
     @PutMapping("/update/{updaterID}/{toUpdateID}")

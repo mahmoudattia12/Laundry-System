@@ -1,7 +1,9 @@
 package com.example.LaundrySystem.Controller.ServiceProvider;
 
 import com.example.LaundrySystem.Entities.Customer;
+import com.example.LaundrySystem.Entities.Laundry;
 import com.example.LaundrySystem.Entities.Order;
+import com.example.LaundrySystem.Repositories.LaundryRepository;
 import com.example.LaundrySystem.Repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,8 @@ import java.util.Optional;
 public class OrderServices {
     @Autowired
     OrderRepository orderRepo;
+    @Autowired
+    LaundryRepository laundryRepo;
 
     public String add(Order order){
         try {
@@ -20,8 +24,14 @@ public class OrderServices {
             if(ord.isPresent()){
                 return "Already Exist";
             }else{
-                orderRepo.save(order);
-                return Integer.toString(order.getID());
+                Optional<Laundry> checkLaundry = laundryRepo.findById(order.getLaundry().getName());
+                if(checkLaundry.isPresent()){
+                    order.setLaundry(checkLaundry.get());
+                    orderRepo.save(order);
+                    return Integer.toString(order.getID());
+                }else{
+                    return "Laundry Not Found";
+                }
             }
         }catch (Exception e){
             return e.getMessage();

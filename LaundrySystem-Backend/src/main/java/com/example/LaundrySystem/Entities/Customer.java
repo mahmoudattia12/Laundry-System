@@ -97,4 +97,12 @@ public class Customer {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
+
+    public List<Laundry> getLaundries() {
+        return laundries;
+    }
+
+    public void setLaundries(List<Laundry> laundries) {
+        this.laundries = laundries;
+    }
 }

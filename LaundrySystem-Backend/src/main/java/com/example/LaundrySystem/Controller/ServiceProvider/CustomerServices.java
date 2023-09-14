@@ -1,11 +1,14 @@
 package com.example.LaundrySystem.Controller.ServiceProvider;
 
 import com.example.LaundrySystem.Entities.Customer;
+import com.example.LaundrySystem.Entities.Laundry;
 import com.example.LaundrySystem.Entities.Order;
 import com.example.LaundrySystem.Repositories.CustomerRepository;
+import com.example.LaundrySystem.Repositories.LaundryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,14 +16,35 @@ import java.util.Optional;
 public class CustomerServices {
     @Autowired
     CustomerRepository customerRepo;
-    public String add(Customer customer){
+    @Autowired
+    LaundryRepository laundryRepo;
+    public String add(Customer customer, String laundryName){
         try {
-            Optional<Customer> cus = customerRepo.findById(customer.getPhoneNumber());
-            if(cus.isPresent()){
-                return "Already Exists";
+            Optional<Laundry> checkLaundry = laundryRepo.findById(laundryName);
+            if(checkLaundry.isPresent()){
+                Optional<Customer> cus = customerRepo.findById(customer.getPhoneNumber());
+                if(cus.isPresent()){
+                    Laundry laundry = checkLaundry.get();
+                    Customer customer1 = cus.get();
+                    if(customer1.getLaundries().contains(laundry)){
+                        return "Already Exists";
+                    }else{
+                        customer1.getLaundries().add(laundry);
+                        laundry.getCustomers().add(customer1);
+                        customerRepo.save(customer1);
+                        laundryRepo.save(laundry);
+                        return "SUCCESS";
+                    }
+                }else{
+                    Laundry laundry = checkLaundry.get();
+                    customer.getLaundries().add(laundry);
+                    laundry.getCustomers().add(customer);
+                    customerRepo.save(customer);
+                    laundryRepo.save(laundry);
+                    return "SUCCESS";
+                }
             }else{
-                customerRepo.save(customer);
-                return "SUCCESS";
+                return "Laundry Not Found";
             }
         }catch (Exception e){
             return e.getMessage();
@@ -72,11 +96,18 @@ public class CustomerServices {
         }
     }
 
-    public List<Order> getCustomerOrders(String customerID){
+    public List<Order> getCustomerOrders(String customerID, String laundryName){
         try {
             Optional<Customer> cus = customerRepo.findById(customerID);
-            if(cus.isPresent()){
-                return cus.get().getOrders();
+            Optional<Laundry> checkLaundry = laundryRepo.findById(laundryName);
+            if(cus.isPresent() && checkLaundry.isPresent()){
+                List<Order> withinLaundry = new ArrayList<>();
+                for(Order order : cus.get().getOrders()){
+                    if(order.getLaundry().getName().equalsIgnoreCase(laundryName)){
+                        withinLaundry.add(order);
+                    }
+                }
+                return withinLaundry;
             }else
                 return null;
         }catch (Exception e){

@@ -15,8 +15,8 @@ public class CustomerController {
     CustomerServices customerServices;
 
     @PostMapping("/add")
-    public String addCustomer(@RequestBody Customer customer){
-        return customerServices.add(customer);
+    public String addCustomer(@RequestBody Customer customer, @RequestParam("laundryName") String laundryName){
+        return customerServices.add(customer, laundryName);
     }
 
     @PutMapping("/update/{ID}")
@@ -39,8 +39,8 @@ public class CustomerController {
         return customerServices.getByID(ID);
     }
 
-    @GetMapping("/getCustomerOrders/{customerID}")
-    public List<Order> getCustomerOrders(@PathVariable String ID){
-        return customerServices.getCustomerOrders(ID);
+    @GetMapping("/getCustomerOrders/{customerID}/{laundryName}")
+    public List<Order> getCustomerOrders(@PathVariable String ID, @PathVariable String laundryName){
+        return customerServices.getCustomerOrders(ID, laundryName);
     }
 }
