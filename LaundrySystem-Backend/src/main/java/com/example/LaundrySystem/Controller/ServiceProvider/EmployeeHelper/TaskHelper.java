@@ -5,12 +5,14 @@ import com.example.LaundrySystem.Entities.Employee;
 import com.example.LaundrySystem.Entities.EmployeeTask;
 import com.example.LaundrySystem.Entities.TaskPrimaryKey;
 import com.example.LaundrySystem.Repositories.EmployeeTaskRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@Transactional
 public class TaskHelper implements IHelper {
     @Autowired
     private EmployeeTaskRepository empTaskRepo;

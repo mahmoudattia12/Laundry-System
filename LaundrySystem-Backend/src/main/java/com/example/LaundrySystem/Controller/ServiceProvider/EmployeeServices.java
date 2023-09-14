@@ -51,6 +51,7 @@ import com.example.LaundrySystem.Repositories.EmployeeHolidayRepository;
 import com.example.LaundrySystem.Repositories.EmployeeRepository;
 import com.example.LaundrySystem.Repositories.EmployeeTaskRepository;
 import com.example.LaundrySystem.Repositories.LaundryRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +59,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class EmployeeServices {
     @Autowired
     private EmployeeRepository empRepo;

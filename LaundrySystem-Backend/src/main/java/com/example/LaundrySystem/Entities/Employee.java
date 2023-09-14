@@ -41,10 +41,10 @@ public class Employee {
     private LocalTime startShiftTime;
     @Column
     private LocalTime endShiftTime;
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JsonIgnore //to break the circular reference
     private List<EmployeeTask> tasks= new ArrayList<>();
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JsonIgnore //to break the circular reference
     private List<EmployeeHoliday> holidays= new ArrayList<>();
 

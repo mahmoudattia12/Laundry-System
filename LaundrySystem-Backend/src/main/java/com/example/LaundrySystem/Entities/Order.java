@@ -30,11 +30,11 @@ public class Order {
     @Column
     private String alternatePhone;
 
-    @OneToMany(mappedBy = "order",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "order",cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<OrderItem> items = new ArrayList<>();
 
-    @OneToMany(mappedBy = "order",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "order",cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<OrderNote> notes = new ArrayList<>();
 

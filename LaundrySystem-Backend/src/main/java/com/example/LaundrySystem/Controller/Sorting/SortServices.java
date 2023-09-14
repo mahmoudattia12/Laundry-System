@@ -1,11 +1,13 @@
 package com.example.LaundrySystem.Controller.Sorting;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class SortServices<T extends Comparable<T>> {
     @Autowired
     SortEmployee sortEmployee;

@@ -28,7 +28,7 @@ public class Customer {
     @Column(nullable = false, columnDefinition = "DOUBLE DEFAULT 0.0")
     private double totalPays;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Order> orders = new ArrayList<>();
 

@@ -5,6 +5,7 @@ import com.example.LaundrySystem.Entities.Laundry;
 import com.example.LaundrySystem.Entities.Order;
 import com.example.LaundrySystem.Repositories.LaundryRepository;
 import com.example.LaundrySystem.Repositories.OrderRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class OrderServices {
     @Autowired
     OrderRepository orderRepo;

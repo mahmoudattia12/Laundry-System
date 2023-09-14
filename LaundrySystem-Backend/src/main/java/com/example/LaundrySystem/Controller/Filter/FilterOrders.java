@@ -2,12 +2,14 @@ package com.example.LaundrySystem.Controller.Filter;
 
 import com.example.LaundrySystem.Entities.Order;
 import com.example.LaundrySystem.Repositories.OrderRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class FilterOrders<T extends Comparable<T>> implements IFilter{
     @Autowired
     OrderRepository orderRepo;

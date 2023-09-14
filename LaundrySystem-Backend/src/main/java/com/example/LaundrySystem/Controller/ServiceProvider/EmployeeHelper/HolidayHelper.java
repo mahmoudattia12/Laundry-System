@@ -2,12 +2,14 @@ package com.example.LaundrySystem.Controller.ServiceProvider.EmployeeHelper;
 
 import com.example.LaundrySystem.Entities.*;
 import com.example.LaundrySystem.Repositories.EmployeeHolidayRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@Transactional
 public class HolidayHelper implements IHelper {
     @Autowired
     EmployeeHolidayRepository empHolidayRepo;

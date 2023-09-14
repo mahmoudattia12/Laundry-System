@@ -2,12 +2,14 @@ package com.example.LaundrySystem.Controller.Sorting;
 
 import com.example.LaundrySystem.Entities.Order;
 import com.example.LaundrySystem.Repositories.OrderRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class SortOrder <T extends Comparable<T>> implements ISorterStrategy {
     @Autowired
     OrderRepository orderRepo;
