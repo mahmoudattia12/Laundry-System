@@ -36,6 +36,7 @@ public class Customer {
     @JoinTable(name = "Customer_Laundry",
                 joinColumns = {@JoinColumn(name = "customerPhone")},
                 inverseJoinColumns = {@JoinColumn(name = "LaundryName")})
+    @JsonIgnore
     private List<Laundry> laundries = new ArrayList<>();
     private final double goldenPaysLimit = 1000;
     public Customer(){}

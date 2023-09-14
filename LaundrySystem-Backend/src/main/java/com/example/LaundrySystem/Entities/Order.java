@@ -40,6 +40,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "laundryName", nullable = false)
+    @JsonIgnore
     private Laundry laundry;
 
     public Order(){}

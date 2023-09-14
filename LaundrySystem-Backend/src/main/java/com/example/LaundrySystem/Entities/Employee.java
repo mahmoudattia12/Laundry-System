@@ -50,6 +50,7 @@ public class Employee {
 
     @ManyToOne
     @JoinColumn(name = "laundry_name", nullable = false)
+    @JsonIgnore
     private Laundry laundry;
 
 

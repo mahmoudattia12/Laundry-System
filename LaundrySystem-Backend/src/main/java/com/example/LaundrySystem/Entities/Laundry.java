@@ -1,6 +1,8 @@
 package com.example.LaundrySystem.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -8,7 +10,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "Laundries")
-public class Laundry {
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "name"
+)
+public class Laundry <T extends Comparable<T>> {
     @Id
     private String name;
     @Column(nullable = false)
@@ -17,6 +23,7 @@ public class Laundry {
     private String password;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "laundries")
+    @JsonIgnore
     private List<Customer> customers = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "laundry")

@@ -8,11 +8,12 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
-public class LaundryServices {
+public class LaundryServices <T extends Comparable<T>> {
     @Autowired
     LaundryRepository laundryRepo;
     @Autowired
@@ -76,6 +77,25 @@ public class LaundryServices {
            }
         }catch (Exception e){
             return e.getMessage();
+        }
+    }
+
+    public List<T> getEntityInstances(String laundryName, String entity){
+        try {
+            Optional<Laundry> laundryCheck = laundryRepo.findById(laundryName);
+            if(laundryCheck.isPresent()){
+                System.out.println(laundryName);
+                System.out.println(entity);
+                return switch (entity) {
+                    case "emp" -> laundryCheck.get().getEmployees();
+                    case "cus" -> laundryCheck.get().getCustomers();
+                    case "ord" -> laundryCheck.get().getOrders();
+                    default -> null;
+                };
+            }else
+                return null;
+        }catch (Exception e){
+            return null;
         }
     }
 }
