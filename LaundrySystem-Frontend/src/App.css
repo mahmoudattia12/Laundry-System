@@ -1,0 +1,12 @@
+.error-message {
+    background-color: rgb(248, 85, 85); /* Light red background color */
+    color: rgb(255, 255, 255); /* Text color for better readability */
+    padding: 5px; /* Add some padding for spacing */
+    border-radius: 5px; /* Rounded corners */
+    margin-top: 5px; /* Adjust margin for spacing */
+  }
+  .white-blue-bg {
+    background-color: #e0e0ff; /* Change this color to the desired white-blue color */
+    min-height: 100vh; /* Ensure the container covers the entire viewport height */
+  }
+  
