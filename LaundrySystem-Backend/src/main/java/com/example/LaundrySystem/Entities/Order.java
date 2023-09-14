@@ -38,6 +38,10 @@ public class Order {
     @JsonIgnore
     private List<OrderNote> notes = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "laundryName", nullable = false)
+    private Laundry laundry;
+
     public Order(){}
 
     public Order(int ID, String currState, boolean isDelivery, LocalDateTime startDate, LocalDateTime endDate, double totalPrice, Customer customerPhone, String alternatePhone) {

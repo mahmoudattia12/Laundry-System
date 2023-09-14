@@ -48,6 +48,10 @@ public class Employee {
     @JsonIgnore //to break the circular reference
     private List<EmployeeHoliday> holidays= new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "laundry_name", nullable = false)
+    private Laundry laundry;
+
     public Employee(){}
 
     public Employee(String userName, String password, String phoneNumber, String email, boolean isManager) {

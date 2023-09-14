@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 public class EmployeeTask {
     @Id
     @ManyToOne
-    @JoinColumn(name = "employee_user_name")
+    @JoinColumn(name = "employee_user_name", nullable = false)
     private Employee employee;
     @Id
     private String task;

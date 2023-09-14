@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 public class EmployeeHoliday {
     @Id
     @ManyToOne
-    @JoinColumn(name = "employee_user_name")
+    @JoinColumn(name = "employee_user_name", nullable = false)
     private Employee employee;
     @Id
     private String holiday;
