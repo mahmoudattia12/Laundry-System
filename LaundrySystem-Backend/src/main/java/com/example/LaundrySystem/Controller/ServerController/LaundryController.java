@@ -11,12 +11,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/laundry")
+@CrossOrigin(origins = "http://127.0.0.1:5173/")
 public class LaundryController <T extends Comparable<T>> {
     @Autowired
     LaundryServices laundryServices;
 
     @PostMapping("/signup")
     public String signup(@RequestBody Laundry laundry){
+
         return laundryServices.signup(laundry);
     }
 

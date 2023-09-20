@@ -17,6 +17,8 @@ public class Order {
     private String currState;
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean isDelivery;
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean isPaid;
     @Column(nullable = false)
     private LocalDateTime startDate;
     @Column(nullable = false)
@@ -45,10 +47,11 @@ public class Order {
 
     public Order(){}
 
-    public Order(int ID, String currState, boolean isDelivery, LocalDateTime startDate, LocalDateTime endDate, double totalPrice, Customer customerPhone, String alternatePhone) {
+    public Order(int ID, String currState, boolean isDelivery, boolean isPaid, LocalDateTime startDate, LocalDateTime endDate, double totalPrice, Customer customerPhone, String alternatePhone) {
         this.ID = ID;
         this.currState = currState;
         this.isDelivery = isDelivery;
+        this.isPaid = isPaid;
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalPrice = totalPrice;
@@ -79,6 +82,14 @@ public class Order {
 
     public void setDelivery(boolean delivery) {
         isDelivery = delivery;
+    }
+
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean paid) {
+        isPaid = paid;
     }
 
     public LocalDateTime getStartDate() {

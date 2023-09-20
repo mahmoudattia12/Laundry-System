@@ -71,7 +71,7 @@ public class EmployeeServices {
     private LaundryRepository laundryRepo;
     @Autowired
     private HelperFactory helperFactory;
-    public String signup(Employee emp) {
+    public String signup(Employee emp, String laundryName) {
         try {
             Optional<Employee> checkEmp = empRepo.findById(emp.getUserName());
             if(checkEmp.isPresent()){
@@ -81,7 +81,8 @@ public class EmployeeServices {
                   && emp.getPassword().equals("$$$system&&&admin&&&system$$$")){
                     emp.setManager(true);
                 }
-                Optional<Laundry> checkLaundry = laundryRepo.findById(emp.getLaundry().getName());
+
+                Optional<Laundry> checkLaundry = laundryRepo.findById(laundryName);
                 if(checkLaundry.isPresent()){
                     emp.setLaundry(checkLaundry.get());
                     empRepo.save(emp);
@@ -103,7 +104,7 @@ public class EmployeeServices {
                 if(emp.get().getPassword().equals(employee.getPassword())){
                     return "SUCCESS";
                 }else{
-                    return "INCORRECT";
+                    return "INCORRECT PASSWORD";
                 }
             }else{
                 return "NOT FOUND";

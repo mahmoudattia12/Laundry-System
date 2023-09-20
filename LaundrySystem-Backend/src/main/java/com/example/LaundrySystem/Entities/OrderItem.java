@@ -15,7 +15,9 @@ public class OrderItem {
     @Id
     private String serviceCategory;
     @Column(nullable = false)
-    private int number;
+    private int quantity;
+
+
     @Column(nullable = false)
     private double price;
     @Column
@@ -23,11 +25,11 @@ public class OrderItem {
 
     public OrderItem() {}
 
-    public OrderItem(Order order, String type, String serviceCategory, int number, double price, double discount) {
+    public OrderItem(Order order, String type, String serviceCategory, int quantity, double price, double discount) {
         this.order = order;
         this.type = type;
         this.serviceCategory = serviceCategory;
-        this.number = number;
+        this.quantity = quantity;
         this.price = price;
         this.discount = discount;
     }
@@ -61,11 +63,11 @@ public class OrderItem {
     }
 
     public int getNumber() {
-        return number;
+        return quantity;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setNumber(int quantity) {
+        this.quantity = quantity;
     }
 
     public double getPrice() {
@@ -82,5 +84,12 @@ public class OrderItem {
 
     public void setDiscount(double discount) {
         this.discount = discount;
+    }
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

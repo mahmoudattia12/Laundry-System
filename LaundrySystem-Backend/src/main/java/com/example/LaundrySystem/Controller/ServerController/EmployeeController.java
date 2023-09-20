@@ -13,14 +13,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/emp")
+@CrossOrigin(origins = "http://127.0.0.1:5173/")
 public class EmployeeController {
     @Autowired
     private EmployeeServices employeeServices;
 
     @PostMapping("/signup")
-    public String signup(@RequestBody Employee emp) {
+    public String signup(@RequestBody Employee emp, @RequestParam("laundryName") String laundryName) {
         System.out.println("hi from signup");
-        return employeeServices.signup(emp);
+        return employeeServices.signup(emp, laundryName);
     }
 
     @PostMapping("/login")

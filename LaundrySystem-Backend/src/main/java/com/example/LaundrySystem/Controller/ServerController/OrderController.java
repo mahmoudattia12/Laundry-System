@@ -6,6 +6,7 @@ import com.example.LaundrySystem.Controller.ServiceProvider.OrderServices;
 import com.example.LaundrySystem.Entities.Order;
 import com.example.LaundrySystem.Entities.OrderItem;
 import com.example.LaundrySystem.Entities.OrderNote;
+import com.example.LaundrySystem.Entities.ReceivedOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/order")
+@CrossOrigin(origins = "http://127.0.0.1:5173/")
 public class OrderController {
     @Autowired
     OrderServices orderServices;
@@ -22,8 +24,8 @@ public class OrderController {
     NotesServices notesServices;
 
     @PostMapping("/add")
-    public String add(@RequestBody Order order){
-        return orderServices.add(order);
+    public String add(@RequestBody ReceivedOrder receivedOrder){
+        return orderServices.add(receivedOrder);
     }
 
     @PutMapping("/update/{orderID}")
@@ -46,9 +48,21 @@ public class OrderController {
         return orderServices.getByID(orderID);
     }
 
-    @PostMapping("/addNote")
-    public String addNote(@RequestParam("orderID") int orderID, @RequestParam("note") String note){
-        return notesServices.add(orderID, note);
+    @PostMapping("/addNotes")
+    public String addNotes(@RequestBody String[] notes ,@RequestParam("orderID") int orderID){
+        try {
+//            int ID = Integer.parseInt(orderID);
+            for(String n : notes){
+                String response = notesServices.add(orderID, n);
+                if(!response.equals("SUCCESS")){
+                    return response;
+                }
+            }
+            return "SUCCESS";
+        }catch (Exception e){
+            return e.getMessage();
+        }
+
     }
 
     @PutMapping("/updateNote/{orderID}/{oldNote}/{newNote}")
@@ -71,9 +85,9 @@ public class OrderController {
         return notesServices.getById(orderID);
     }
 
-    @PostMapping("/addItem")
-    public String addItem(@RequestBody OrderItem orderItem){
-        return itemServices.addItem(orderItem);
+    @PostMapping("/addItems")
+    public String addItems(@RequestBody OrderItem[] orderItems, @RequestParam("orderID") int orderID){
+        return itemServices.addItems(orderItems, orderID);
     }
 
     @PutMapping("/updateItem/{orderID}/{type}/{service}")

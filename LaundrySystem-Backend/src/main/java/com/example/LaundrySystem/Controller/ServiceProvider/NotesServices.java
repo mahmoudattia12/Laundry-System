@@ -27,13 +27,11 @@ public class NotesServices {
                 Order order = check.get();
                 NotePrimaryKey notePK = new NotePrimaryKey(order, note);
                 Optional<OrderNote> checkNote = noteRepo.findById(notePK);
-                if(checkNote.isPresent()){
-                    return "Already Exist";
-                }else{
+                if(!checkNote.isPresent()){
                     OrderNote orderNote = new OrderNote(order, note);
                     noteRepo.save(orderNote);
-                    return "SUCCESS";
                 }
+                return "SUCCESS";
             }else{
                 return "Order Not Found";
             }

@@ -20,22 +20,33 @@ public class ItemServices {
     @Autowired
     OrderRepository orderRepo;
 
-    public String addItem(OrderItem orderItem){
+    public String addItems(OrderItem[] orderItems, int orderID){
         try {
-            Optional<Order> checkOrder = orderRepo.findById(orderItem.getOrder().getID());
+            Optional<Order> checkOrder = orderRepo.findById(orderID);
             if(checkOrder.isPresent()){
-                ItemPrimaryKey itemPK = orderItem.getPK();
-                Optional<OrderItem> checkItem = itemRepo.findById(itemPK);
-                if(checkItem.isPresent()){
-                    return "Already Exists";
-                }else{
-                    itemRepo.save(checkItem.get());
-                    return "SUCCESS";
+                Order order = checkOrder.get();
+                String response = "SUCCESS";
+                for(OrderItem item : orderItems){
+                    ItemPrimaryKey itemPK = new ItemPrimaryKey(order, item.getType(), item.getServiceCategory());
+                    Optional<OrderItem> checkItem = itemRepo.findById(itemPK);
+                    if(!checkItem.isPresent()){
+                        System.out.println("item ok");
+                        item.setOrder(order);
+                        itemRepo.save(item);
+                    }else{
+                        response = "SUCCESS.\nBUT for Items with duplicated (type & service), only the first one was submitted.\n"
+                                    +"You can't submit more than one item with same (type & service).\n"
+                                    +"now you can edit the order.";
+                        System.out.println(response);
+                    }
                 }
+                return response;
             }else{
+                System.out.println("Order Not Found");
                 return "Order Not Found";
             }
         }catch (Exception e){
+            System.out.println(e.getMessage());
             return e.getMessage();
         }
     }
