@@ -1,9 +1,18 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import Form from "./Form";
+import Form from "../components/CardForm";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const LoginForm = () => {
+const EmpLogin = () => {
+  const navigate = useNavigate();
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const laundryName = searchParams.get("laundryName");
+  console.log("hi from login    ", laundryName);
+
   const [formData, setFormData] = useState({
     userName: "",
     password: "",
@@ -29,7 +38,7 @@ const LoginForm = () => {
 
     // Password must be at least 8 characters and contain letters, digits, and symbols
     const passwordRegex =
-      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-])[A-Za-z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\-]{8,}$/;
     if (!passwordRegex.test(formData.password)) {
       errors.passwordError =
         "Password must be at least 8 characters and contain letters, digits, and symbols";
@@ -53,11 +62,34 @@ const LoginForm = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      // Form is valid, you can proceed with submission to the server.
       console.log(formData);
+      const toSent: any = {};
+      toSent.userName = formData.userName.trim();
+      toSent.password = formData.password;
+      console.log(toSent);
+      try {
+        const response = await axios.post(
+          "http://localhost:9080/emp/login",
+          toSent
+        );
+        console.log(response.data);
+        if (response.data === "SUCCESS") {
+          navigate("/Orders", {
+            state: {
+              laundryName: laundryName,
+              empUserName: toSent.userName,
+            },
+          });
+        } else {
+          alert(response.data);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert(error);
+      }
     }
   };
 
@@ -81,6 +113,7 @@ const LoginForm = () => {
         <button
           type="button"
           className="btn btn-outline-secondary"
+          style={{ backgroundColor: "white", color: "black" }}
           onClick={toggleShowPassword}
         >
           {showPassword ? (
@@ -96,11 +129,17 @@ const LoginForm = () => {
   return (
     <Form
       fields={formFields}
-      title="Login"
+      title="Employee Login"
       onSubmit={handleLogin}
       buttonText="Login"
+      beforeLink="Don't have an account? "
+      insideLink="Sign Up"
+      path={`/employeeSignup?laundryName=${laundryName}`}
+      beforeLink2="Back to choose a laundry? "
+      insideLink2="Laundry Sign Up"
+      path2="/"
     />
   );
 };
 
-export default LoginForm;
+export default EmpLogin;

@@ -1,0 +1,48 @@
+.btn.btn-primary {
+  display: block;
+  font-weight: bold;
+  margin: 0 auto;
+}
+.btn.btn-primary:hover {
+  box-shadow: 0 0 25px rgba(8, 8, 8, 0.2);
+  background-color: rgb(66, 71, 203);
+}
+.btn.btn-primary:active {
+  background-color: #97a9f9;
+  transform: scale(0.95);
+}
+
+.error-message {
+  background-color: rgb(248, 85, 85);
+  color: rgb(255, 255, 255);
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+.white-blue-bg {
+  /* background-color: #e0e0ff;  */
+  min-height: 100vh;
+  background-image: url("../assets/try4.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #ffffff;
+}
+
+.custom-modal {
+  max-width: 80%;
+}
+
+.custom-line {
+  border: none;
+  height: 2px;
+  background-color: #000;
+}
+
+.custom-line-notes {
+  border-top: 3px solid #000;
+}
+
+.custom-modal .modal-header button.close {
+  background-color: red !important;
+}

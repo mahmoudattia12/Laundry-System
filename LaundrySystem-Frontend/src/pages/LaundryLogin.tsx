@@ -1,20 +1,21 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import Form from "./Form";
+import Form from "../components/CardForm";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const SignupForm = () => {
+const LaundryLogin = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    userName: "",
+    name: "",
     password: "",
-    email: "",
-    phoneNumber: "",
   });
 
   const [formErrors, setFormErrors] = useState({
-    userNameError: "",
+    nameError: "",
     passwordError: "",
-    phoneNumberError: "",
   });
 
   const [showPassword, setShowPassword] = useState(false); // State to show/hide password
@@ -23,36 +24,22 @@ const SignupForm = () => {
     let valid = true;
     const errors: any = {};
 
-    if (formData.userName.length < 3) {
-      errors.userNameError = "User Name must be at least 3 characters";
+    if (formData.name.length < 3) {
+      errors.nameError = "laundry Name must be at least 3 characters";
       valid = false;
     } else {
-      errors.userNameError = "";
+      errors.nameError = "";
     }
 
-    // Password must be at least 8 characters and contain letters, digits, and symbols
     const passwordRegex =
-      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-])[A-Za-z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\-]{8,}$/;
+
     if (!passwordRegex.test(formData.password)) {
       errors.passwordError =
         "Password must be at least 8 characters and contain letters, digits, and symbols";
       valid = false;
     } else {
       errors.passwordError = "";
-    }
-
-    if (!/^[0][0-9]+$/.test(formData.phoneNumber)) {
-      errors.phoneNumberError =
-        "Phone Number must start with 0 and contain only digits";
-      valid = false;
-    } else if (
-      formData.phoneNumber.length !== 9 &&
-      formData.phoneNumber.length !== 11
-    ) {
-      errors.phoneNumberError = "Phone Number must be exactly 9 or 11 digits";
-      valid = false;
-    } else {
-      errors.phoneNumberError = "";
     }
 
     setFormErrors(errors);
@@ -71,25 +58,48 @@ const SignupForm = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      // Form is valid, you can proceed with submission to the server.
       console.log(formData);
+      const toSent: any = {};
+      toSent.name = formData.name.trim();
+      toSent.password = formData.password;
+      // setFormData(toSent);
+      console.log(toSent);
+      try {
+        const response = await axios.post(
+          "http://localhost:9080/laundry/login",
+          toSent
+        );
+        console.log(response.data);
+        if (response.data === "SUCCESS") {
+          navigate("/employeeSignup", {
+            state: {
+              laundryName: toSent.name,
+            },
+          });
+        } else {
+          alert(response.data);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert(error);
+      }
     }
   };
 
   const formFields = [
     {
-      label: "User Name",
+      label: "Laundry Name",
       type: "text",
-      name: "userName",
-      value: formData.userName,
+      name: "name",
+      value: formData.name,
       onChange: handleChange,
-      error: formErrors.userNameError,
+      error: formErrors.nameError,
     },
     {
-      label: "Password",
+      label: "Laundry Password",
       type: showPassword ? "text" : "password",
       name: "password",
       value: formData.password,
@@ -99,6 +109,7 @@ const SignupForm = () => {
         <button
           type="button"
           className="btn btn-outline-secondary"
+          style={{ backgroundColor: "white", color: "black" }}
           onClick={toggleShowPassword}
         >
           {showPassword ? (
@@ -109,31 +120,20 @@ const SignupForm = () => {
         </button>
       ),
     },
-    {
-      label: "Email",
-      type: "email",
-      name: "email",
-      value: formData.email,
-      onChange: handleChange,
-    },
-    {
-      label: "Phone Number",
-      type: "tel",
-      name: "phoneNumber",
-      value: formData.phoneNumber,
-      onChange: handleChange,
-      error: formErrors.phoneNumberError,
-    },
   ];
 
   return (
     <Form
       fields={formFields}
-      title="Signup"
+      title="Laundry Login"
       onSubmit={handleSubmit}
-      buttonText="Signup"
+      buttonText="Login"
+      beforeLink="Laundry is not created? "
+      insideLink="Sign Up"
+      path="/"
+      path2="/"
     />
   );
 };
 
-export default SignupForm;
+export default LaundryLogin;
