@@ -3,10 +3,7 @@ package com.example.LaundrySystem.Controller.ServerController;
 import com.example.LaundrySystem.Controller.ServiceProvider.ItemServices;
 import com.example.LaundrySystem.Controller.ServiceProvider.NotesServices;
 import com.example.LaundrySystem.Controller.ServiceProvider.OrderServices;
-import com.example.LaundrySystem.Entities.Order;
-import com.example.LaundrySystem.Entities.OrderItem;
-import com.example.LaundrySystem.Entities.OrderNote;
-import com.example.LaundrySystem.Entities.ReceivedOrder;
+import com.example.LaundrySystem.Entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,11 +22,13 @@ public class OrderController {
 
     @PostMapping("/add")
     public String add(@RequestBody ReceivedOrder receivedOrder){
+        System.out.println("hi from create order controller");
         return orderServices.add(receivedOrder);
     }
 
     @PutMapping("/update/{orderID}")
-    public String update(@PathVariable int orderID, @RequestBody Order newOrder){
+    public String update(@PathVariable int orderID, @RequestBody ReceivedOrder newOrder){
+        System.out.println("hi from update order controller");
         return orderServices.update(orderID, newOrder);
     }
 
@@ -38,13 +37,13 @@ public class OrderController {
         return orderServices.delete(orderID);
     }
 
-    @GetMapping("/getAll")
-    public List<Order> getAll(){
-        return orderServices.getAll();
+    @GetMapping("/getAll/{laundryName}")
+    public List<OrderItemPair> getAll(@PathVariable String laundryName){
+        return orderServices.getAll(laundryName);
     }
 
     @GetMapping("/getByID/{orderID}")
-    public Order getByID(int orderID){
+    public Order getByID(@PathVariable int orderID){
         return orderServices.getByID(orderID);
     }
 

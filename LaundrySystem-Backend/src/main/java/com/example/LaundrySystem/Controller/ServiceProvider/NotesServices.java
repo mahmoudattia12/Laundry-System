@@ -36,6 +36,11 @@ public class NotesServices {
                 return "Order Not Found";
             }
         }catch (Exception e){
+            //delete it as the front will consider that the order is not added is this case
+            Optional<Order> checkOrder = orderRepo.findById(orderID);
+            if(checkOrder.isPresent()){
+                orderRepo.deleteById(orderID);
+            }
             return e.getMessage();
         }
     }

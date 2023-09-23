@@ -1,11 +1,13 @@
 package com.example.LaundrySystem.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Order_Items")
 @IdClass(ItemPrimaryKey.class)
 public class OrderItem {
+    @JsonIgnore
     @Id
     @ManyToOne
     @JoinColumn(name = "order_id")
@@ -16,8 +18,6 @@ public class OrderItem {
     private String serviceCategory;
     @Column(nullable = false)
     private int quantity;
-
-
     @Column(nullable = false)
     private double price;
     @Column
@@ -34,9 +34,9 @@ public class OrderItem {
         this.discount = discount;
     }
 
-    public ItemPrimaryKey getPK(){
-        return new ItemPrimaryKey(order, type, serviceCategory);
-    }
+//    public ItemPrimaryKey getPK(){
+//        return new ItemPrimaryKey(order, type, serviceCategory);
+//    }
 
     public Order getOrder() {
         return order;
@@ -59,17 +59,9 @@ public class OrderItem {
     }
 
     public void setServiceCategory(String serviceCategory) {
+        System.out.println("hi from setServiceCategory");
         this.serviceCategory = serviceCategory;
     }
-
-    public int getNumber() {
-        return quantity;
-    }
-
-    public void setNumber(int quantity) {
-        this.quantity = quantity;
-    }
-
     public double getPrice() {
         return price;
     }

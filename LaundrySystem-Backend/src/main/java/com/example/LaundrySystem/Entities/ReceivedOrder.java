@@ -1,9 +1,25 @@
 package com.example.LaundrySystem.Entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ReceivedOrder {
+    private int ID;
     private String laundryName, customerPhone, alternatePhone, startDateTime, endDateTime, isDelivery, isPaid, currState;
 
+    private List<OrderItem> items = new ArrayList<>();
+    private List<String> notes = new ArrayList<>();
+
+
     public ReceivedOrder() {}
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
 
     public String getLaundryName() {
         return laundryName;
@@ -67,5 +83,20 @@ public class ReceivedOrder {
 
     public void setCurrState(String currState) {
         this.currState = currState;
+    }
+    public List<OrderItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderItem> items) {
+        this.items = items;
+    }
+
+    public List<String> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<String> notes) {
+        this.notes = notes;
     }
 }

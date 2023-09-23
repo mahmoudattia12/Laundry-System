@@ -9,44 +9,59 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
+//@Transactional
 public class ItemServices {
     @Autowired
     OrderItemRepository itemRepo;
     @Autowired
     OrderRepository orderRepo;
 
+
+    @Transactional
     public String addItems(OrderItem[] orderItems, int orderID){
         try {
             Optional<Order> checkOrder = orderRepo.findById(orderID);
             if(checkOrder.isPresent()){
                 Order order = checkOrder.get();
+                List<OrderItem> temp = new ArrayList<>();
                 String response = "SUCCESS";
-                for(OrderItem item : orderItems){
-                    ItemPrimaryKey itemPK = new ItemPrimaryKey(order, item.getType(), item.getServiceCategory());
+                for(OrderItem orderItem : orderItems){
+                    ItemPrimaryKey itemPK = new ItemPrimaryKey(order, orderItem.getType(), orderItem.getServiceCategory());
                     Optional<OrderItem> checkItem = itemRepo.findById(itemPK);
                     if(!checkItem.isPresent()){
                         System.out.println("item ok");
-                        item.setOrder(order);
+                        OrderItem item = new OrderItem(order, orderItem.getType(), orderItem.getServiceCategory(), orderItem.getQuantity(), orderItem.getPrice(), orderItem.getDiscount());
                         itemRepo.save(item);
+                        temp.add(item);
                     }else{
                         response = "SUCCESS.\nBUT for Items with duplicated (type & service), only the first one was submitted.\n"
                                     +"You can't submit more than one item with same (type & service).\n"
                                     +"now you can edit the order.";
-                        System.out.println(response);
+                        //System.out.println(response);
                     }
                 }
+                //for setting the total order price
+                order.getItems().addAll(temp);
+                order.setItems(order.getItems());
+                System.out.println("from service total price after add is: " + order.getTotalPrice());
+                System.out.println("response   :" +response);
+                orderRepo.save(order);
                 return response;
             }else{
-                System.out.println("Order Not Found");
                 return "Order Not Found";
             }
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            //delete it as the front will consider that the order is not added is this case
+            Optional<Order> checkOrder = orderRepo.findById(orderID);
+            if(checkOrder.isPresent()){
+                orderRepo.deleteById(orderID);
+            }
+            System.out.println("hi after delete the order as the item has an exception");
             return e.getMessage();
         }
     }
@@ -58,7 +73,8 @@ public class ItemServices {
                 ItemPrimaryKey itemPK = new ItemPrimaryKey(checkOrder.get(), type, service);
                 Optional<OrderItem> checkItem = itemRepo.findById(itemPK);
                 if (checkItem.isPresent()) {
-                    if (newOrderItem.getPK().equals(itemPK)) {
+                    ItemPrimaryKey newItemPK = new ItemPrimaryKey(newOrderItem.getOrder(), newOrderItem.getType(), newOrderItem.getServiceCategory());
+                    if (newItemPK.equals(itemPK)) {
                         itemRepo.save(newOrderItem);
                         return "SUCCESS";
                     } else

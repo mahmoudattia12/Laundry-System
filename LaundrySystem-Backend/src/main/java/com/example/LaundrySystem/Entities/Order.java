@@ -1,7 +1,9 @@
 package com.example.LaundrySystem.Entities;
 
+import com.example.LaundrySystem.Repositories.CustomerRepository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ public class Order {
     private LocalDateTime startDate;
     @Column(nullable = false)
     private LocalDateTime endDate;
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "DOUBLE PRECISION DEFAULT 0.0")
     private double totalPrice;
 
     @ManyToOne
@@ -32,11 +34,11 @@ public class Order {
     @Column
     private String alternatePhone;
 
-    @OneToMany(mappedBy = "order",cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<OrderItem> items = new ArrayList<>();
 
-    @OneToMany(mappedBy = "order",cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     @JsonIgnore
     private List<OrderNote> notes = new ArrayList<>();
 
@@ -109,11 +111,6 @@ public class Order {
     }
 
     public double getTotalPrice() {
-        //here calculate it : totalPrice = sigma for all items(itemPrice * numberOfItems * ((100 - discount)/100))
-        totalPrice = 0;
-        for(OrderItem orderItem : items){
-            totalPrice += (orderItem.getPrice() * orderItem.getNumber() *((100-orderItem.getDiscount())/100));
-        }
         return totalPrice;
     }
 
@@ -142,7 +139,10 @@ public class Order {
     }
 
     public void setItems(List<OrderItem> items) {
+        System.out.println("hi from setItems");
         this.items = items;
+        calculateTotalPrice();
+        System.out.println("total price   " + this.totalPrice);
     }
 
     public List<OrderNote> getNotes() {
@@ -167,5 +167,15 @@ public class Order {
 
     public void setLaundry(Laundry laundry) {
         this.laundry = laundry;
+    }
+
+
+    public void calculateTotalPrice(){
+        double temp = 0;
+        for(OrderItem orderItem : items){
+            temp += (orderItem.getPrice() * orderItem.getQuantity() * ((100.0-orderItem.getDiscount())/100.0));
+        }
+        setTotalPrice(temp);
+
     }
 }
