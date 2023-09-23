@@ -46,3 +46,48 @@
 .custom-modal .modal-header button.close {
   background-color: red !important;
 }
+
+.navbar-nav .nav-link:hover {
+  background-color: #333;
+  color: #fff;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.table-container {
+  max-height: 500px;
+  overflow-y: auto;
+  text-align: center;
+}
+
+.table-fixed thead {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+}
+
+tr,
+table {
+  box-sizing: content-box;
+}
+
+tr.hover-bg-gray:hover {
+  background-color: #d0cfcf;
+  border-radius: 20px !important;
+}
+
+/* Define a CSS class to center-align the table */
+.centered-table {
+  width: 100%; /* Set the table width to 100% to center-align */
+  text-align: center; /* Center-align the text within the table */
+}
+
+/* Style the table header (th) cells */
+.centered-table th {
+  background-color: #f2f2f2; /* Add a background color for header cells */
+  padding: 10px; /* Add some padding for header cells */
+}
+
+/* Style the table data (td) cells */
+.centered-table td {
+  padding: 10px; /* Add some padding for data cells */
+}
