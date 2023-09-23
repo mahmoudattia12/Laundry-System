@@ -63,8 +63,9 @@ const HandleCustomer = ({
     let valid = true;
     const errors: any = {};
 
-    if (customerData.name.length < 3) {
-      errors.customerNameError = "Name must be at least 3 characters";
+    if (customerData.name.length < 3 || customerData.name.length > 20) {
+      errors.customerNameError =
+        "Name must be at least 3 and at most 20 characters";
       valid = false;
     } else {
       errors.customerNameError = "";
