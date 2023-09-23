@@ -38,8 +38,9 @@ const EmpSignup = () => {
     let valid = true;
     const errors: any = {};
 
-    if (formData.userName.length < 3) {
-      errors.userNameError = "User Name must be at least 3 characters";
+    if (formData.userName.length < 3 || formData.userName.length > 20) {
+      errors.userNameError =
+        "User Name must be at least 3 and at most 20 characters";
       valid = false;
     } else {
       errors.userNameError = "";

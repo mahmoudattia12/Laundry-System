@@ -24,8 +24,9 @@ const LaundryLogin = () => {
     let valid = true;
     const errors: any = {};
 
-    if (formData.name.length < 3) {
-      errors.nameError = "laundry Name must be at least 3 characters";
+    if (formData.name.length < 3 || formData.name.length > 20) {
+      errors.nameError =
+        "laundry Name must be at least 3 and at most 20 characters";
       valid = false;
     } else {
       errors.nameError = "";
