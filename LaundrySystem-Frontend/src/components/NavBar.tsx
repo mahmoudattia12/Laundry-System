@@ -21,7 +21,12 @@ const NavBar = ({ employeeName, laundryName, containerPage }: NavBarProps) => {
   return (
     <div
       className="d-flex flex-column justify-content-between bg-primary text-light"
-      style={{ height: "100vh", width: "25%" }}
+      style={{
+        height: "100vh",
+        width: "25%",
+        borderTopRightRadius: "7px",
+        borderBottomRightRadius: "7px",
+      }}
     >
       {/* Section 1: Laundry and Employee Name */}
       <div className="p-3">

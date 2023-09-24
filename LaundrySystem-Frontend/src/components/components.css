@@ -54,15 +54,19 @@
 }
 
 .table-container {
-  max-height: 500px;
+  max-height: 388px;
   overflow-y: auto;
   text-align: center;
+  border-radius: 15px;
+  background-color: #fff;
+  background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
 }
 
 .table-fixed thead {
   position: sticky;
   top: 0;
   background-color: #fff;
+  background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
 }
 
 tr,
@@ -90,4 +94,8 @@ tr.hover-bg-gray:hover {
 /* Style the table data (td) cells */
 .centered-table td {
   padding: 10px; /* Add some padding for data cells */
+}
+
+.custom-margin {
+  margin: -6; /* Remove default margin */
 }

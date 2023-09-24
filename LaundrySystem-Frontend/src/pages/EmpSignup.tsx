@@ -48,7 +48,7 @@ const EmpSignup = () => {
 
     // Password must be at least 8 characters and contain letters, digits, and symbols
     const passwordRegex =
-      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-])[A-Za-z\d!@#$%^&*()_+{}\[\]:;<>,.?~\\-]{8,}$/;
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!=@#$%^&*()_+{}\[\]:;<>,.?~\\-])[A-Za-z\d!=@#$%^&*()_+{}\[\]:;<>,.?~\\-]{8,}$/;
 
     if (!passwordRegex.test(formData.password)) {
       errors.passwordError =

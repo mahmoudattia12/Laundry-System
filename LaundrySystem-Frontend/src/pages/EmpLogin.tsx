@@ -73,7 +73,7 @@ const EmpLogin = () => {
       console.log(toSent);
       try {
         const response = await axios.post(
-          "http://localhost:9080/emp/login",
+          `http://localhost:9080/emp/login?laundryName=${laundryName}`,
           toSent
         );
         console.log(response.data);

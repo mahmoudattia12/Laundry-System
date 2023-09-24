@@ -3,6 +3,17 @@ import { Modal, Form, Button, InputGroup, FormControl } from "react-bootstrap";
 import axios from "axios";
 import { Order } from "../pages/home/Orders";
 
+interface HandleOrderProps {
+  show: boolean;
+  onHide: () => void;
+  laundryName: string;
+  isUpdate: boolean;
+  oldOrder?: Order | null;
+  headerTitle: string;
+  buttonName: string;
+  onSuccess: (order: Order) => void;
+}
+
 export interface OrderItem {
   type: string;
   customType?: string;
@@ -13,16 +24,6 @@ export interface OrderItem {
   quantity: number;
 }
 
-interface HandleOrderProps {
-  show: boolean;
-  onHide: () => void;
-  laundryName: string;
-  isUpdate: boolean;
-  oldOrder?: Order | null;
-  headerTitle: string;
-  buttonName: string;
-}
-
 const HandleOrder = ({
   show,
   onHide,
@@ -31,6 +32,7 @@ const HandleOrder = ({
   oldOrder,
   headerTitle,
   buttonName,
+  onSuccess,
 }: HandleOrderProps) => {
   const [orderItems, setOrderItems] = useState<OrderItem[]>([
     {
@@ -246,13 +248,14 @@ const HandleOrder = ({
             `http://localhost:9080/order/add`,
             toSent
           );
-          console.log(response.data);
-          if (isNumeric(response.data)) {
-            const orderID: number = Number(response.data);
+          console.log("add order response : ", response.data);
+          if (isNumeric(response.data.id)) {
+            const orderID: number = Number(response.data.id);
             console.log("orderID ", orderID);
+
             //order added let's add its notes & items
 
-            var responseData: string = "";
+            var responseData = "";
             if (orderNotes.length > 0) {
               console.log(orderNotes);
               const notesResponse = await axios.post(
@@ -261,8 +264,8 @@ const HandleOrder = ({
               );
               responseData = notesResponse.data;
             }
-            console.log("note response: ", responseData);
-            if (responseData === "" || responseData === "SUCCESS") {
+            console.log("notes response: ", responseData);
+            if (responseData === "" || typeof responseData !== "string") {
               //add items
               console.log("order items  ", orderItems);
 
@@ -270,14 +273,43 @@ const HandleOrder = ({
                 `http://localhost:9080/order/addItems?orderID=${orderID}`,
                 orderItems
               );
-              if (itemsResponse.data.includes("SUCCESS")) {
+              console.log("items Responseeee ", itemsResponse);
+              if (typeof itemsResponse.data !== "string") {
                 console.log("the whole order is added");
                 //the whole order is added
+                console.log("the returned order ", response.data);
+                console.log("the returned notes ", responseData);
+                console.log("the returned items " + itemsResponse.data);
+
+                const setOrder: any = {};
+                setOrder.ID = response.data.id;
+                setOrder.customerName = response.data.customer.name;
+                setOrder.customerPhone = response.data.customer.phoneNumber;
+                setOrder.customerAddress = response.data.customer.address;
+                setOrder.alternatePhone = response.data.alternatePhone;
+                setOrder.startDateTime = response.data.startDate.replace(
+                  "T",
+                  " "
+                );
+                setOrder.dueDateTime = response.data.endDate.replace("T", " ");
+                setOrder.isPaid = response.data.paid;
+                setOrder.isDelivery = response.data.delivery;
+                setOrder.currState = response.data.currState;
+                setOrder.items = itemsResponse.data;
+                setOrder.notes = responseData;
+                var totPrice: number = 0;
+                for (const item of itemsResponse.data) {
+                  totPrice +=
+                    item.price * item.quantity * ((100 - item.discount) / 100);
+                }
+                setOrder.totalPrice = totPrice;
+                onSuccess(setOrder);
                 alert("SUCCESS");
                 resetWindow();
                 onHide();
               } else {
                 //here delete the added order with its id (handled in the back --> test)
+
                 alert(itemsResponse.data);
               }
             } else {
@@ -299,7 +331,6 @@ const HandleOrder = ({
 
         console.log("update to sent: ", toSent);
 
-        const orderID = toSent.ID;
         console.log("orderID", toSent.ID);
         if (toSent.ID) {
           try {
@@ -309,10 +340,33 @@ const HandleOrder = ({
             );
             console.log("update response : -- ", response.data);
 
-            alert(response.data);
-            if (response.data === "SUCCESS") {
+            if (typeof response.data !== "string") {
+              const setOrder: any = {};
+              setOrder.ID = response.data.order.id;
+              setOrder.customerName = response.data.order.customer.name;
+              setOrder.customerPhone = response.data.order.customer.phoneNumber;
+              setOrder.customerAddress = response.data.order.customer.address;
+              setOrder.alternatePhone = response.data.order.alternatePhone;
+              setOrder.startDateTime = response.data.order.startDate.replace(
+                "T",
+                " "
+              );
+              setOrder.dueDateTime = response.data.order.endDate.replace(
+                "T",
+                " "
+              );
+              setOrder.totalPrice = response.data.order.totalPrice;
+              setOrder.isPaid = response.data.order.paid;
+              setOrder.isDelivery = response.data.order.delivery;
+              setOrder.currState = response.data.order.currState;
+              setOrder.items = response.data.orderItems;
+              setOrder.notes = response.data.order.notesMessages;
+              onSuccess(setOrder);
+              alert("SUCCESS");
               resetWindow();
               onHide();
+            } else {
+              alert(response.data);
             }
           } catch (error) {
             console.error("Error:", error);
