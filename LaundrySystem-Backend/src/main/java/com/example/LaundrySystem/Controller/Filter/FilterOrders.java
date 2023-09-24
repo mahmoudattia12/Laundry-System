@@ -14,18 +14,24 @@ public class FilterOrders<T extends Comparable<T>> implements IFilter{
     @Autowired
     OrderRepository orderRepo;
     @Override
-    public List<Order> meetCriteria(String criteria, String toMeet) {
-        return switch (criteria) {
-            case "ID" -> orderRepo.findByID(toMeet);
-            case "customerPhone" -> orderRepo.findByCustomerPhoneNumber(toMeet);
-            case "price" -> orderRepo.findByTotalPrice(Double.parseDouble(toMeet));
-            case "alternatePhone" -> orderRepo.findByAlternatePhone(toMeet);
-            case "startDate" -> orderRepo.findByStartDate(toMeet);
-            case "endDate" -> orderRepo.findByEndDate(toMeet);
-            case "currState" -> orderRepo.findByCurrState(toMeet);
-            case "isDelivery" -> orderRepo.findByIsDelivery(toMeet);
-            case "search" -> orderRepo.findByAttributesContaining(toMeet);
-            default -> null;
-        };
+    public List<Order> meetCriteria(String criteria, String toMeet, String laundryName) {
+        try {
+            return switch (criteria) {
+                case "ID" -> orderRepo.findByIDAndLaundryName(toMeet, laundryName);
+                case "customerPhone" -> orderRepo.findByCustomerPhoneNumberAndLaundryName(toMeet, laundryName);
+                case "price" -> orderRepo.findByTotalPriceAndLaundryName(Double.parseDouble(toMeet), laundryName);
+                case "alternatePhone" -> orderRepo.findByAlternatePhoneAndLaundryName(toMeet, laundryName);
+                case "startDate" -> orderRepo.findByStartDateAndLaundryName(toMeet, laundryName);
+                case "endDate" -> orderRepo.findByEndDateAndLaundryName(toMeet, laundryName);
+                case "currState" -> orderRepo.findByCurrStateAndLaundryName(toMeet, laundryName);
+                case "isDelivery" -> orderRepo.findByIsDeliveryAndLaundryName(toMeet, laundryName);
+                case "isPaid" -> orderRepo.findByIsPaidAndLaundryName(toMeet, laundryName);
+                case "customerName" -> orderRepo.findByCustomerNameAndLaundryName(toMeet, laundryName);
+                case "search" -> orderRepo.findByAttributesContainingAndLaundryName(toMeet, laundryName);
+                default -> null;
+            };
+        }catch (Exception e){
+            return null;
+        }
     }
 }

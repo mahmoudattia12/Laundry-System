@@ -14,20 +14,24 @@ public class SortCustomer <T extends Comparable<T>> implements ISorterStrategy {
     @Autowired
     CustomerRepository customerRepo;
     @Override
-    public List<Customer> sort(String sortBy, boolean order) {
-        switch (sortBy){
-            case "name":
-                if(order) return customerRepo.findAllByOrderByNameAsc(); else return customerRepo.findAllByOrderByNameDesc();
-            case "email":
-                if(order) return customerRepo.findAllByOrderByEmailAsc(); else return customerRepo.findAllByOrderByEmailDesc();
-            case "phoneNumber":
-                if(order) return customerRepo.findAllByOrderByPhoneNumberAsc(); else return customerRepo.findAllByOrderByPhoneNumberDesc();
-            case "address":
-                if(order) return customerRepo.findAllByOrderByAddressAsc(); else return customerRepo.findAllByOrderByAddressDesc();
-            case "totalPays":
-                if(order) return customerRepo.findAllByOrderByTotalPaysAsc(); else return customerRepo.findAllByOrderByTotalPaysDesc();
-            default:
-                return null;
+    public List<Customer> sort(String sortBy, boolean order, String laundryName) {
+        try{
+            switch (sortBy){
+                case "name":
+                    if(order) return customerRepo.findAllByOrderByNameAsc(); else return customerRepo.findAllByOrderByNameDesc();
+                case "email":
+                    if(order) return customerRepo.findAllByOrderByEmailAsc(); else return customerRepo.findAllByOrderByEmailDesc();
+                case "phoneNumber":
+                    if(order) return customerRepo.findAllByOrderByPhoneNumberAsc(); else return customerRepo.findAllByOrderByPhoneNumberDesc();
+                case "address":
+                    if(order) return customerRepo.findAllByOrderByAddressAsc(); else return customerRepo.findAllByOrderByAddressDesc();
+                case "totalPays":
+                    if(order) return customerRepo.findAllByOrderByTotalPaysAsc(); else return customerRepo.findAllByOrderByTotalPaysDesc();
+                default:
+                    return null;
+            }
+        }catch (Exception e){
+            return null;
         }
     }
 }

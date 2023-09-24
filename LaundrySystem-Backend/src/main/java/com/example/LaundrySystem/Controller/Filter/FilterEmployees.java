@@ -14,17 +14,21 @@ public class FilterEmployees <T extends Comparable<T>> implements IFilter {
     @Autowired
     EmployeeRepository empRepo;
     @Override
-    public List<Employee> meetCriteria(String criteria, String toMeet) {
-        return switch (criteria) {
-            case "userName" -> empRepo.findByUserName(toMeet);
-            case "phoneNumber" -> empRepo.findByPhoneNumber(toMeet);
-            case "email" -> empRepo.findByEmail(toMeet);
-            case "salary" -> empRepo.findBySalary(Double.parseDouble(toMeet));
-            case "startShift" -> empRepo.findByStartShiftTime(toMeet);
-            case "endShift" -> empRepo.findByEndShiftTime(toMeet);
-            case "isManager" -> empRepo.findByIsManager(toMeet);
-            case "search" -> empRepo.findByAttributesContaining(toMeet);
-            default -> null;
-        };
+    public List<Employee> meetCriteria(String criteria, String toMeet, String laundryName) {
+        try {
+            return switch (criteria) {
+                case "userName" -> empRepo.findByUserName(toMeet);
+                case "phoneNumber" -> empRepo.findByPhoneNumber(toMeet);
+                case "email" -> empRepo.findByEmail(toMeet);
+                case "salary" -> empRepo.findBySalary(Double.parseDouble(toMeet));
+                case "startShift" -> empRepo.findByStartShiftTime(toMeet);
+                case "endShift" -> empRepo.findByEndShiftTime(toMeet);
+                case "isManager" -> empRepo.findByIsManager(toMeet);
+                case "search" -> empRepo.findByAttributesContaining(toMeet);
+                default -> null;
+            };
+        }catch (Exception e){
+            return null;
+        }
     }
 }
