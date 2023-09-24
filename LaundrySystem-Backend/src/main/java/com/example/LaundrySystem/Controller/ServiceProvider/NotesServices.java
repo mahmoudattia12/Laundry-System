@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class NotesServices {
+public class NotesServices <T extends Comparable<T>> {
     @Autowired
     OrderNoteRepository noteRepo;
     @Autowired

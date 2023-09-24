@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 //@Transactional
-public class ItemServices {
+public class ItemServices <T extends Comparable<T>>  {
     @Autowired
     OrderItemRepository itemRepo;
     @Autowired
@@ -23,7 +23,7 @@ public class ItemServices {
 
 
     @Transactional
-    public String addItems(OrderItem[] orderItems, int orderID){
+    public <T> T addItems(OrderItem[] orderItems, int orderID){
         try {
             Optional<Order> checkOrder = orderRepo.findById(orderID);
             if(checkOrder.isPresent()){
@@ -51,9 +51,9 @@ public class ItemServices {
                 System.out.println("from service total price after add is: " + order.getTotalPrice());
                 System.out.println("response   :" +response);
                 orderRepo.save(order);
-                return response;
+                return (T) order.getItems();
             }else{
-                return "Order Not Found";
+                return (T) "Order Not Found";
             }
         }catch (Exception e){
             //delete it as the front will consider that the order is not added is this case
@@ -62,7 +62,7 @@ public class ItemServices {
                 orderRepo.deleteById(orderID);
             }
             System.out.println("hi after delete the order as the item has an exception");
-            return e.getMessage();
+            return (T) e.getMessage();
         }
     }
 

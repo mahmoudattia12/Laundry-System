@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class OrderServices {
+public class OrderServices <T extends Comparable<T>> {
     @Autowired
     OrderRepository orderRepo;
     @Autowired
@@ -24,8 +24,7 @@ public class OrderServices {
     OrderNoteRepository noteRepo;
     @Autowired
     OrderItemRepository itemRepo;
-
-    public String add(ReceivedOrder receivedOrder) {
+    public <T> T add(ReceivedOrder receivedOrder) {
         try {
             Optional<Laundry> checkLaundry = laundryRepo.findById(receivedOrder.getLaundryName());
             if (checkLaundry.isPresent()) {
@@ -45,15 +44,15 @@ public class OrderServices {
                     if (receivedOrder.getIsPaid().equals("true")) order.setPaid(true);
                     else order.setPaid(false);
                     orderRepo.save(order);
-                    return Integer.toString(order.getID());
+                    return (T) order;
                 } else {
-                    return "Customer Not Found";
+                    return (T) "Customer Not Found";
                 }
             } else {
-                return "Laundry Not Found";
+                return (T) "Laundry Not Found";
             }
         } catch (Exception e) {
-            return e.getMessage();
+            return (T) e.getMessage();
         }
     }
 
@@ -70,7 +69,7 @@ public class OrderServices {
         }
     }
 
-    public String update(int ID, ReceivedOrder newOrder) {
+    public <T> T update(int ID, ReceivedOrder newOrder) {
         try {
             Optional<Laundry> checkLaundry = laundryRepo.findById(newOrder.getLaundryName());
             if (checkLaundry.isPresent()) {
@@ -118,23 +117,23 @@ public class OrderServices {
                             }
                             order.setNotes(orderNotes);
                             orderRepo.save(order);
-                            return "SUCCESS";
+                            return (T) new OrderItemPair(order, order.getItems());
                         } else
-                            return "FAIL";
+                            return (T) "FAIL";
                     } else
-                        return "Not Found";
+                        return (T) "Not Found";
                 } else {
-                    return "Customer Not Found";
+                    return (T) "Customer Not Found";
                 }
 
             } else {
-                return "Laundry Not Found";
+                return (T) "Laundry Not Found";
             }
 
         } catch (Exception e) {
-            return "Error: Failed to update \nmay be because you can't duplicate the same (type + service Category) for the orderItems\n"
-                    +"So accumulate them in one item"
-                    + e.getMessage();
+            return (T) ("Error: Failed to update \nmay be because you can't duplicate the same (type + service Category) for the orderItems\n"
+                                +"So accumulate them in one item"
+                                + e.getMessage());
         }
     }
 

@@ -7,12 +7,13 @@ import com.example.LaundrySystem.Entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/order")
 @CrossOrigin(origins = "http://127.0.0.1:5173/")
-public class OrderController {
+public class OrderController <T extends Comparable<T>> {
     @Autowired
     OrderServices orderServices;
     @Autowired
@@ -21,15 +22,15 @@ public class OrderController {
     NotesServices notesServices;
 
     @PostMapping("/add")
-    public String add(@RequestBody ReceivedOrder receivedOrder){
+    public <T> T add(@RequestBody ReceivedOrder receivedOrder){
         System.out.println("hi from create order controller");
-        return orderServices.add(receivedOrder);
+        return (T) orderServices.add(receivedOrder);
     }
 
     @PutMapping("/update/{orderID}")
-    public String update(@PathVariable int orderID, @RequestBody ReceivedOrder newOrder){
+    public <T> T update(@PathVariable int orderID, @RequestBody ReceivedOrder newOrder){
         System.out.println("hi from update order controller");
-        return orderServices.update(orderID, newOrder);
+        return (T) orderServices.update(orderID, newOrder);
     }
 
     @DeleteMapping("/delete/{orderID}")
@@ -48,18 +49,21 @@ public class OrderController {
     }
 
     @PostMapping("/addNotes")
-    public String addNotes(@RequestBody String[] notes ,@RequestParam("orderID") int orderID){
+    public <T> T addNotes(@RequestBody String[] notes ,@RequestParam("orderID") int orderID){
         try {
 //            int ID = Integer.parseInt(orderID);
+            List<String> addedNotes = new ArrayList<>();
             for(String n : notes){
                 String response = notesServices.add(orderID, n);
                 if(!response.equals("SUCCESS")){
-                    return response;
+                    return (T) response;
+                }else{
+                    addedNotes.add(n);
                 }
             }
-            return "SUCCESS";
+            return (T) addedNotes;
         }catch (Exception e){
-            return e.getMessage();
+            return (T) e.getMessage();
         }
 
     }
@@ -85,8 +89,8 @@ public class OrderController {
     }
 
     @PostMapping("/addItems")
-    public String addItems(@RequestBody OrderItem[] orderItems, @RequestParam("orderID") int orderID){
-        return itemServices.addItems(orderItems, orderID);
+    public <T> T addItems(@RequestBody OrderItem[] orderItems, @RequestParam("orderID") int orderID){
+        return (T) itemServices.addItems(orderItems, orderID);
     }
 
     @PutMapping("/updateItem/{orderID}/{type}/{service}")
