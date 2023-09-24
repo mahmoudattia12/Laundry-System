@@ -97,17 +97,26 @@ public class EmployeeServices {
         }
     }
 
-    public String login(Employee employee){
+    public String login(Employee employee, String laundryName){
         try {
             Optional<Employee> emp = empRepo.findById(employee.getUserName());
             if(emp.isPresent()){
-                if(emp.get().getPassword().equals(employee.getPassword())){
-                    return "SUCCESS";
+                Optional<Laundry> checkLaundry = laundryRepo.findById(laundryName);
+                if(checkLaundry.isPresent()){
+                    if(emp.get().getLaundry().getName().equals(laundryName)){
+                        if(emp.get().getPassword().equals(employee.getPassword())){
+                            return "SUCCESS";
+                        }else{
+                            return "INCORRECT PASSWORD";
+                        }
+                    }else{
+                        return "Employee Not Signed Up to This Laundry";
+                    }
                 }else{
-                    return "INCORRECT PASSWORD";
+                    return "Laundry Not Found";
                 }
             }else{
-                return "NOT FOUND";
+                return "Employee Not Found";
             }
         } catch (Exception e){
             return e.getMessage();

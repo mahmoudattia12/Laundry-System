@@ -25,9 +25,9 @@ public class EmployeeController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody Employee emp){
+    public String login(@RequestBody Employee emp, @RequestParam("laundryName") String laundryName){
         System.out.println("hi from login");
-        return employeeServices.login(emp);
+        return employeeServices.login(emp, laundryName);
     }
 
     @PutMapping("/update/{updaterID}/{toUpdateID}")
