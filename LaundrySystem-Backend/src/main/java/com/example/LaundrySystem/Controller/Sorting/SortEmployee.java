@@ -19,17 +19,17 @@ public class SortEmployee <T extends Comparable<T>> implements ISorterStrategy {
         try{
             switch (sortBy){
                 case "userName":
-                    if(order) return empRepo.findAllByOrderByUserNameAsc(); else return empRepo.findAllByOrderByUserNameDesc();
+                    if(order) return empRepo.findAllByLaundryNameOrderByUserNameAsc(laundryName); else return empRepo.findAllByLaundryNameOrderByUserNameDesc(laundryName);
                 case "phoneNumber":
-                    if(order) return empRepo.findAllByOrderByPhoneNumberAsc(); else return empRepo.findAllByOrderByPhoneNumberDesc();
+                    if(order) return empRepo.findAllByLaundryNameOrderByPhoneNumberAsc(laundryName); else return empRepo.findAllByLaundryNameOrderByPhoneNumberDesc(laundryName);
                 case "email":
-                    if(order) return empRepo.findAllByOrderByEmailAsc(); else return empRepo.findAllByOrderByEmailDesc();
+                    if(order) return empRepo.findAllByLaundryNameOrderByEmailAsc(laundryName); else return empRepo.findAllByLaundryNameOrderByEmailDesc(laundryName);
                 case "salary":
-                    if(order) return empRepo.findAllByOrderBySalaryAsc(); else return empRepo.findAllByOrderBySalaryDesc();
+                    if(order) return empRepo.findAllByLaundryNameOrderBySalaryAsc(laundryName); else return empRepo.findAllByLaundryNameOrderBySalaryDesc(laundryName);
                 case "startShift":
-                    if(order) return empRepo.findAllByOrderByStartShiftTimeAsc(); else return empRepo.findAllByOrderByStartShiftTimeDesc();
+                    if(order) return empRepo.findAllByLaundryNameOrderByStartShiftTimeAsc(laundryName); else return empRepo.findAllByLaundryNameOrderByStartShiftTimeDesc(laundryName);
                 case "endShift":
-                    if(order) return empRepo.findAllByOrderByEndShiftTimeAsc(); else return empRepo.findAllByOrderByEndShiftTimeDesc();
+                    if(order) return empRepo.findAllByLaundryNameOrderByEndShiftTimeAsc(laundryName); else return empRepo.findAllByLaundryNameOrderByEndShiftTimeDesc(laundryName);
                 default:
                     return null;
             }

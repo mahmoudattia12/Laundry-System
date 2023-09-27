@@ -4,6 +4,7 @@ import com.example.LaundrySystem.Entities.Customer;
 import com.example.LaundrySystem.Repositories.CustomerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,15 +19,15 @@ public class SortCustomer <T extends Comparable<T>> implements ISorterStrategy {
         try{
             switch (sortBy){
                 case "name":
-                    if(order) return customerRepo.findAllByOrderByNameAsc(); else return customerRepo.findAllByOrderByNameDesc();
+                    if(order) return customerRepo.findAllByLaundries_Name(laundryName, Sort.by(Sort.Direction.ASC, "name")); else return customerRepo.findAllByLaundries_Name(laundryName, Sort.by(Sort.Direction.DESC, "name"));
                 case "email":
-                    if(order) return customerRepo.findAllByOrderByEmailAsc(); else return customerRepo.findAllByOrderByEmailDesc();
+                    if(order) return customerRepo.findAllByLaundries_Name(laundryName, Sort.by(Sort.Direction.ASC, "email")); else return customerRepo.findAllByLaundries_Name(laundryName, Sort.by(Sort.Direction.DESC, "email"));
                 case "phoneNumber":
-                    if(order) return customerRepo.findAllByOrderByPhoneNumberAsc(); else return customerRepo.findAllByOrderByPhoneNumberDesc();
+                    if(order) return customerRepo.findAllByLaundries_Name(laundryName, Sort.by(Sort.Direction.ASC, "phoneNumber")); else return customerRepo.findAllByLaundries_Name(laundryName, Sort.by(Sort.Direction.DESC, "phoneNumber"));
                 case "address":
-                    if(order) return customerRepo.findAllByOrderByAddressAsc(); else return customerRepo.findAllByOrderByAddressDesc();
-                case "totalPays":
-                    if(order) return customerRepo.findAllByOrderByTotalPaysAsc(); else return customerRepo.findAllByOrderByTotalPaysDesc();
+                    if(order) return customerRepo.findAllByLaundries_Name(laundryName, Sort.by(Sort.Direction.ASC, "address")); else return customerRepo.findAllByLaundries_Name(laundryName, Sort.by(Sort.Direction.DESC, "address"));
+//                case "totalPays":
+//                    if(order) return customerRepo.findAllByOrderByTotalPaysAsc(); else return customerRepo.findAllByOrderByTotalPaysDesc();
                 default:
                     return null;
             }

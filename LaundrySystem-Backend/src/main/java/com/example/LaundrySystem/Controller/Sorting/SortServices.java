@@ -1,5 +1,6 @@
 package com.example.LaundrySystem.Controller.Sorting;
 
+import com.example.LaundrySystem.Controller.ServiceProvider.CustomerAdapter;
 import com.example.LaundrySystem.Controller.ServiceProvider.OrderAdapter;
 import com.example.LaundrySystem.Entities.Order;
 import jakarta.transaction.Transactional;
@@ -19,12 +20,14 @@ public class SortServices<T extends Comparable<T>> {
     SortCustomer sortCustomer;
     @Autowired
     OrderAdapter orderAdapter;
+    @Autowired
+    CustomerAdapter customerAdapter;
 
     public List<T> sort(String entity, String sortBy, boolean order, String laundryName){
         try {
             return switch (entity) {
                 case "emp" -> sortEmployee.sort(sortBy, order, laundryName);
-                case "cus" -> sortCustomer.sort(sortBy, order, laundryName);
+                case "cus" -> customerAdapter.convert(sortCustomer.sort(sortBy, order, laundryName), laundryName);
                 case "ord" -> orderAdapter.convert(sortOrder.sort(sortBy, order, laundryName));
                 default -> null;
             };

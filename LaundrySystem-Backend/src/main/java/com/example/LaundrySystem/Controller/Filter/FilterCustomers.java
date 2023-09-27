@@ -17,13 +17,11 @@ public class FilterCustomers <T extends Comparable<T>> implements IFilter {
     public List<Customer> meetCriteria(String criteria, String toMeet, String laundryName) {
         try{
             return switch (criteria) {
-                case "name" -> customerRepo.findByName(toMeet);
-                case "email" -> customerRepo.findByEmail(toMeet);
-                case "phoneNumber" -> customerRepo.findByPhoneNumber(toMeet);
-                case "address" -> customerRepo.findByAddress(toMeet);
-                case "totalPays" -> customerRepo.findByTotalPays(Double.parseDouble(toMeet));
-                case "isGold" -> customerRepo.findByIsGoldCustomer(toMeet);
-                case "search" -> customerRepo.findByAttributesContaining(toMeet);
+                case "name" -> customerRepo.findByLaundries_NameAndName(laundryName, toMeet);
+                case "email" -> customerRepo.findByLaundries_NameAndEmail(laundryName, toMeet);
+                case "phoneNumber" -> customerRepo.findByLaundries_NameAndPhoneNumber(laundryName, toMeet);
+                case "address" -> customerRepo.findByLaundries_NameAndAddress(laundryName, toMeet);
+                case "search" -> customerRepo.findByAttributesContainingAndLaundryName(laundryName, toMeet);
                 default -> null;
             };
         }catch (Exception e){
