@@ -192,18 +192,23 @@ public class EmployeeServices {
             if (permission.equals("A")) {
                 Optional<Employee> toDelete = empRepo.findById(toDeleteID);
                 if (toDelete.isPresent()) {
-                    if (!toDeleteID.equals("SystemAdmin")) {
-                        Optional<Laundry> checkLaundry = laundryRepo.findById(laundryName);
-                        if (checkLaundry.isPresent()) {
-                            if (toDelete.get().getLaundry().getName().equals(laundryName)) {
-                                empRepo.deleteById(toDeleteID);
-                                return "SUCCESS";
+                    if(!toDeleteID.equals(deleterID)){
+                        if (!toDeleteID.equals("SystemAdmin")) {
+                            Optional<Laundry> checkLaundry = laundryRepo.findById(laundryName);
+                            if (checkLaundry.isPresent()) {
+                                if (toDelete.get().getLaundry().getName().equals(laundryName)) {
+                                    empRepo.deleteById(toDeleteID);
+                                    return "SUCCESS";
 
-                            } else return "FAIL";
+                                } else return "FAIL";
 
-                        } else return "Laundry Not Found";
+                            } else return "Laundry Not Found";
 
-                    } else return "Not Allowed To Delete The Root Manager";
+                        } else return "Not Allowed To Delete The Root Manager";
+
+                    }else{
+                        return "Can't delete yourself";
+                    }
                 } else {
                     return "ToDelete Not Found";
                 }
