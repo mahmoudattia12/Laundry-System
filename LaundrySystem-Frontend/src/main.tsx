@@ -9,6 +9,10 @@ import LaundryLogin from "./pages/LaundryLogin";
 import EmpLogin from "./pages/EmpLogin";
 import EmpSignup from "./pages/EmpSignup";
 import Orders from "./pages/home/Orders";
+import Customers from "./pages/home/Customers";
+import Employees from "./pages/home/Employees";
+import EmployeeTasks from "./pages/home/EmployeeInfo";
+import EmployeeInfo from "./pages/home/EmployeeInfo";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +34,18 @@ const router = createBrowserRouter([
   {
     path: "Orders",
     element: <Orders />,
+  },
+  {
+    path: "customers",
+    element: <Customers />,
+  },
+  {
+    path: "employees",
+    element: <Employees />,
+  },
+  {
+    path: "empInfo",
+    element: <EmployeeInfo />,
   },
 ]);
 

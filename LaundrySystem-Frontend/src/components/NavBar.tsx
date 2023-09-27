@@ -28,7 +28,6 @@ const NavBar = ({ employeeName, laundryName, containerPage }: NavBarProps) => {
         borderBottomRightRadius: "7px",
       }}
     >
-      {/* Section 1: Laundry and Employee Name */}
       <div className="p-3">
         <div
           className="mb-3"
@@ -44,23 +43,25 @@ const NavBar = ({ employeeName, laundryName, containerPage }: NavBarProps) => {
           />
           {laundryName}
         </div>
-        <div style={{ fontSize: "18px", fontWeight: "bold", color: "black" }}>
+        <div
+          className="mb-3"
+          style={{ fontSize: "18px", fontWeight: "bold", color: "black" }}
+        >
           <FontAwesomeIcon
             icon={faUser}
-            className="fs-3 mr-2"
+            className="fs-2 mr-2"
             style={{ marginRight: "8px" }}
           />
           {employeeName}
         </div>
       </div>
 
-      {/* Section 2: Buttons with Links */}
       <div
         className="d-flex flex-column p-2"
         // style={{ backgroundColor: "#457cba" }}
       >
         <Link
-          to="/orders"
+          to={`/Orders?employeeName=${employeeName}&laundryName=${laundryName}`}
           className="btn m-0 p-2"
           style={{
             textAlign: "left",
@@ -75,11 +76,11 @@ const NavBar = ({ employeeName, laundryName, containerPage }: NavBarProps) => {
           Orders
         </Link>
         <Link
-          to="/tasks"
+          to={`/empInfo?employeeName=${employeeName}&laundryName=${laundryName}`}
           className="btn m-0 p-2"
           style={{
             textAlign: "left",
-            ...(containerPage === "empTasks" && { backgroundColor: "#73b0f5" }),
+            ...(containerPage === "empInfo" && { backgroundColor: "#73b0f5" }),
           }}
         >
           <FontAwesomeIcon
@@ -87,10 +88,10 @@ const NavBar = ({ employeeName, laundryName, containerPage }: NavBarProps) => {
             className="fs-4 mr-2"
             style={{ marginRight: "15px" }}
           />
-          Employees Tasks
+          Employees Info
         </Link>
         <Link
-          to="/employees"
+          to={`/employees?employeeName=${employeeName}&laundryName=${laundryName}`}
           className="btn m-0 p-2"
           style={{
             textAlign: "left",
@@ -107,7 +108,7 @@ const NavBar = ({ employeeName, laundryName, containerPage }: NavBarProps) => {
           Employees Management
         </Link>
         <Link
-          to="/customers"
+          to={`/customers?employeeName=${employeeName}&laundryName=${laundryName}`}
           className="btn m-0 p-2"
           style={{
             textAlign: "left",
@@ -123,7 +124,7 @@ const NavBar = ({ employeeName, laundryName, containerPage }: NavBarProps) => {
           />
           Customers Management
         </Link>
-        <Link
+        {/* <Link
           to="/statistics"
           className="btn m-0 p-2"
           style={{
@@ -139,15 +140,17 @@ const NavBar = ({ employeeName, laundryName, containerPage }: NavBarProps) => {
             style={{ marginRight: "15px" }}
           />
           Statistics
-        </Link>
+        </Link> */}
       </div>
 
-      {/* Section 3: Logout Button */}
       <div
         className="d-flex flex-column align-items-center p-3"
-        style={{ marginBottom: "10vh" }}
+        style={{ marginBottom: "10vh", marginRight: "15px" }}
       >
-        <Link to="/empSignin" className="btn btn-danger mb-2">
+        <Link
+          to={`/employeeLogin?laundryName=${laundryName}`}
+          className="btn btn-danger mb-2"
+        >
           <FontAwesomeIcon
             icon={faLeftLong}
             className="fs-4 mr-2"
