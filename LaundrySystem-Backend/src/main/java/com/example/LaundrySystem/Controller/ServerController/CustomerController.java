@@ -3,6 +3,7 @@ package com.example.LaundrySystem.Controller.ServerController;
 import com.example.LaundrySystem.Controller.ServiceProvider.CustomerServices;
 import com.example.LaundrySystem.Entities.Customer;
 import com.example.LaundrySystem.Entities.Order;
+import com.example.LaundrySystem.Entities.ToSendCustomer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,14 +26,14 @@ public class CustomerController {
         return customerServices.update(ID, newCustomer);
     }
 
-    @DeleteMapping("/delete/{ID}")
-    public String deleteCustomer(@PathVariable String ID){
-        return customerServices.delete(ID);
+    @DeleteMapping("/delete/{ID}/{laundryName}")
+    public String deleteCustomer(@PathVariable String ID, @PathVariable String laundryName){
+        return customerServices.delete(ID, laundryName);
     }
 
-    @GetMapping("/getAll")
-    public List<Customer> getAll(){
-        return customerServices.getAll();
+    @GetMapping("/getAll/{laundryName}")
+    public List<ToSendCustomer> getAll(@PathVariable String laundryName){
+        return customerServices.getAll(laundryName);
     }
 
     @GetMapping("/getByID/{ID}")

@@ -39,7 +39,7 @@ public class OrderController <T extends Comparable<T>> {
     }
 
     @GetMapping("/getAll/{laundryName}")
-    public List<OrderItemPair> getAll(@PathVariable String laundryName){
+    public List<ToSendOrder> getAll(@PathVariable String laundryName){
         return orderServices.getAll(laundryName);
     }
 

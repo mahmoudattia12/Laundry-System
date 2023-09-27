@@ -1,5 +1,4 @@
 package com.example.LaundrySystem.Controller.ServiceProvider;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.example.LaundrySystem.Entities.*;
 import com.example.LaundrySystem.Repositories.*;
@@ -107,6 +106,7 @@ public class OrderServices <T extends Comparable<T>> {
                                 orderItem.setOrder(order);
                             }
                             order.setItems(orderItems);
+
                             List<OrderNote> orderNotes = new ArrayList<>();
                             for(String note : newOrder.getNotes()){
                                 NotePrimaryKey notePK = new NotePrimaryKey(order, note);
@@ -117,7 +117,7 @@ public class OrderServices <T extends Comparable<T>> {
                             }
                             order.setNotes(orderNotes);
                             orderRepo.save(order);
-                            return (T) new OrderItemPair(order, order.getItems());
+                            return (T) new ToSendOrder(order, order.getItems());
                         } else
                             return (T) "FAIL";
                     } else
@@ -137,16 +137,16 @@ public class OrderServices <T extends Comparable<T>> {
         }
     }
 
-    public List<OrderItemPair> getAll(String laundryName) {
+    public List<ToSendOrder> getAll(String laundryName) {
         try {
 
             Optional<Laundry> checkLaundry = laundryRepo.findById(laundryName);
             if (checkLaundry.isPresent()) {
 
-                List<OrderItemPair> ordersItems = new ArrayList<>();
+                List<ToSendOrder> ordersItems = new ArrayList<>();
                 List<Order> orders = checkLaundry.get().getOrders();
                 for (Order order : orders) {
-                    ordersItems.add(new OrderItemPair(order, order.getItems()));
+                    ordersItems.add(new ToSendOrder(order, order.getItems()));
                 }
                 return ordersItems;
             } else {

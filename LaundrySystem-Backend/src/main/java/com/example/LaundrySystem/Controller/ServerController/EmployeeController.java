@@ -1,9 +1,7 @@
 package com.example.LaundrySystem.Controller.ServerController;
 
 import com.example.LaundrySystem.Controller.ServiceProvider.EmployeeServices;
-import com.example.LaundrySystem.Entities.Employee;
-import com.example.LaundrySystem.Entities.EmployeeHoliday;
-import com.example.LaundrySystem.Entities.EmployeeTask;
+import com.example.LaundrySystem.Entities.*;
 import com.example.LaundrySystem.Repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,21 +28,21 @@ public class EmployeeController {
         return employeeServices.login(emp, laundryName);
     }
 
-    @PutMapping("/update/{updaterID}/{toUpdateID}")
-    public String update(@PathVariable String updaterID, @PathVariable String toUpdateID, @RequestBody Employee employee){
+    @PutMapping("/update/{updaterID}/{toUpdateID}/{laundryName}")
+    public String update(@PathVariable String updaterID, @PathVariable String toUpdateID, @PathVariable String laundryName, @RequestBody ReceivedEmployee employee){
         System.out.println("hi from update");
         System.out.println(updaterID);
         System.out.println( toUpdateID);
-        return employeeServices.update(updaterID, toUpdateID, employee);
+        return employeeServices.update(updaterID, toUpdateID, laundryName, employee);
     }
 
-    @DeleteMapping("/delete/{deleterID}/{toDeleteID}")
-    public String delete(@PathVariable String deleterID, @PathVariable String toDeleteID){
-        return employeeServices.delete(deleterID, toDeleteID);
+    @DeleteMapping("/delete/{deleterID}/{toDeleteID}/{laundryName}")
+    public String delete(@PathVariable String deleterID, @PathVariable String toDeleteID, @PathVariable String laundryName){
+        return employeeServices.delete(deleterID, toDeleteID, laundryName);
     }
-    @GetMapping("/getAll")
-    public List<Employee> getAll(){
-        return employeeServices.getAllEmployees();
+    @GetMapping("/getAll/{laundryName}/{empUserName}/{page}")
+    public List<Employee> getAll(@PathVariable String laundryName, @PathVariable String empUserName, @PathVariable String page){
+        return employeeServices.getAllEmployees(laundryName, empUserName, page);
     }
 
     @GetMapping("/getByID/{empID}")
