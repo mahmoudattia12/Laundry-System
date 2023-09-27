@@ -44,9 +44,9 @@ It was used for the Order and Customer entities To convert a list of Orders/Cust
 ---
 ## Design Diagrams:
 ### Entity Relationship diagram:
-![Laundry ER diagram](https://github.com/mahmoudattia12/Laundry-System/assets/96799025/1fe1d8ad-ae90-4b1e-b793-c5feed0bbc96)
+![Laundry ER diagram](https://github.com/mahmoudattia12/Laundry-System/assets/96799025/b03d7b21-13c8-42e6-b990-eccd75de938c)
 ### Relational database tables:
-![LaundrySystem Relational database tables](https://github.com/mahmoudattia12/Laundry-System/assets/96799025/dedf438e-d78a-4752-ade2-74df0e477556)
+![LaundrySystem Relational database tables](https://github.com/mahmoudattia12/Laundry-System/assets/96799025/5a5efb47-a8b6-4837-9727-7678fdaf6a0f)
 ### UML class diagram:
 - [link to the uml class diagram](https://drive.google.com/file/d/1ocEMtN3ttcIXc5rS1hyM8YQyvSVRSCQm/view?usp=sharing)
 ---
