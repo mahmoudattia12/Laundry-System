@@ -1,14 +1,12 @@
 package com.example.LaundrySystem.Entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.List;
 
-public class OrderItemPair {
+public class ToSendOrder {
     private Order order;
     private List<OrderItem> orderItems;
 
-    public OrderItemPair(Order order, List<OrderItem> orderItems) {
+    public ToSendOrder(Order order, List<OrderItem> orderItems) {
         this.order = order;
         this.orderItems = orderItems;
     }

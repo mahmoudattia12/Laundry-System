@@ -23,10 +23,10 @@ public class Customer {
     private String name;
     @Column
     private String address;
-    @Column(nullable = false)
-    private boolean isGoldCustomer;
-    @Column(nullable = false, columnDefinition = "DOUBLE DEFAULT 0.0")
-    private double totalPays;
+//    @Column(nullable = false)
+//    private boolean isGoldCustomer;
+//    @Column(nullable = false, columnDefinition = "DOUBLE PRECISION DEFAULT 0.0")
+//    private double totalPays;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     @JsonIgnore
@@ -38,15 +38,13 @@ public class Customer {
                 inverseJoinColumns = {@JoinColumn(name = "LaundryName")})
     @JsonIgnore
     private List<Laundry> laundries = new ArrayList<>();
-    private final double goldenPaysLimit = 1000;
+//    private final double goldenPaysLimit = 500;
     public Customer(){}
-    public Customer(String phoneNumber, String email, String name, String address, boolean isGoldCustomer, double totalPays) {
+    public Customer(String phoneNumber, String email, String name, String address) {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.name = name;
         this.address = address;
-        this.isGoldCustomer = isGoldCustomer;
-        this.totalPays = totalPays;
     }
 
     public String getPhoneNumber() {
@@ -80,17 +78,6 @@ public class Customer {
     public void setAddress(String address) {
         this.address = address;
     }
-
-    public double getTotalPays() {
-        if(totalPays >= goldenPaysLimit) isGoldCustomer = true; else isGoldCustomer = false;
-        return totalPays;
-    }
-
-    public void setTotalPays(double totalPays) {
-        this.totalPays = totalPays;
-        if(totalPays >= goldenPaysLimit) isGoldCustomer = true; else isGoldCustomer = false;
-    }
-
     public List<Order> getOrders() {
         return orders;
     }
@@ -106,4 +93,28 @@ public class Customer {
     public void setLaundries(List<Laundry> laundries) {
         this.laundries = laundries;
     }
+
+//    public double getTotalPays(String laundryName) {
+//        double temp = 0;
+//        for(Order order : this.orders){
+//            if(order.getLaundry().getName().equals(laundryName)){
+//                temp += order.getTotalPrice();
+//            }
+//        }
+//        this.totalPays = temp;
+//        if(totalPays >= goldenPaysLimit) isGoldCustomer = true; else isGoldCustomer = false;
+//        return totalPays;
+//    }
+//
+//    public void setTotalPays(double totalPays) {
+//        this.totalPays = totalPays;
+//        if(totalPays >= goldenPaysLimit) isGoldCustomer = true; else isGoldCustomer = false;
+//    }
+//    public boolean isGoldCustomer(String laundryName) {
+//        return isGoldCustomer;
+//    }
+//
+//    public void setGoldCustomer(boolean goldCustomer) {
+//        isGoldCustomer = goldCustomer;
+//    }
 }
