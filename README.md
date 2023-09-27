@@ -49,7 +49,7 @@ It was used for the Order and Customer entities To convert a list of Orders/Cust
 ### Relational database tables:
 ![LaundrySystem Relational database tables](https://github.com/mahmoudattia12/Laundry-System/assets/96799025/dedf438e-d78a-4752-ade2-74df0e477556)
 ### UML class diagram:
-- [link to the uml class diagram]()
+- [link to the uml class diagram](https://drive.google.com/file/d/1ocEMtN3ttcIXc5rS1hyM8YQyvSVRSCQm/view?usp=sharing)
 ---
 ## Snapshots of our UI and a user guide:
 ---
