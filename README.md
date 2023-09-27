@@ -6,7 +6,6 @@ A Laundry System Web App developed with spring boot, MySQL, JPA and React
 - [How to run](#How-to-run)
 - [Used design patterns](#used-design-patterns)
 - [Design Diagrams](#Design-Diagrams)
-- [Snapshots of our UI and a user guide](#Snapshots-of-our-UI-and-a-user-guide)
 - [Demo Video for using the app](#Demo-Video-for-using-the-app)
 ---
 ## Frameworks and technology used:
@@ -51,8 +50,7 @@ It was used for the Order and Customer entities To convert a list of Orders/Cust
 ### UML class diagram:
 - [link to the uml class diagram](https://drive.google.com/file/d/1ocEMtN3ttcIXc5rS1hyM8YQyvSVRSCQm/view?usp=sharing)
 ---
-## Snapshots of our UI and a user guide:
----
 ## Demo Video for using the app:
+
 
 
