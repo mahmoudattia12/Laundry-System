@@ -17,8 +17,6 @@ const EmpSignup = () => {
     laundryName = searchParams.get("laundryName");
   }
 
-  console.log("hi from signup    ", laundryName);
-
   const [formData, setFormData] = useState({
     userName: "",
     password: "",
@@ -91,20 +89,18 @@ const EmpSignup = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log(formData);
       const toSent: any = {};
       toSent.userName = formData.userName.trim();
       toSent.password = formData.password;
       toSent.email = formData.email.trim();
       toSent.phoneNumber = formData.phoneNumber;
 
-      console.log(toSent);
       try {
         const response = await axios.post(
           `http://localhost:9080/emp/signup?laundryName=${laundryName}`,
           toSent
         );
-        console.log(response.data);
+
         if (response.data === "SUCCESS") {
           navigate("/Orders", {
             state: {

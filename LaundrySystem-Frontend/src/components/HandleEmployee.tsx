@@ -41,7 +41,6 @@ const HandleEmployee = ({
 
   useEffect(() => {
     if (oldEmployee) {
-      console.log("hi from update useeffect and selected emp:", oldEmployee);
       setEmployeeTasks(oldEmployee.tasks || []);
       setEmployeeHolidays(oldEmployee.holidays || []);
       setFormData({
@@ -149,10 +148,6 @@ const HandleEmployee = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("update is validated");
-      console.log(formData);
-      console.log(employeeTasks);
-      console.log(employeeHolidays);
       const toSent: any = {};
       toSent.userName = oldEmployee?.userName;
       toSent.email = formData.email.trim();
@@ -164,15 +159,12 @@ const HandleEmployee = ({
       toSent.startShiftTime = formData.startShiftTime;
       toSent.endShiftTime = formData.endShiftTime;
 
-      console.log("to send : ", toSent);
-
       if (toSent.userName) {
         try {
           const response = await axios.put(
             `http://localhost:9080/emp/update/${currEmployee}/${toSent.userName}/${laundryName}`,
             toSent
           );
-          console.log("update response : -- ", response.data);
 
           if (response.data === "SUCCESS") {
             const setEmp: any = {};

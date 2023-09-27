@@ -83,9 +83,8 @@ const Customers = () => {
   };
 
   const handleCustomerSuccessCreation = (newCustomer: Customer) => {
-    console.log("hi from handleCustomerSuccessCreation");
     const updatedCustomers = [...customers, newCustomer];
-    console.log("updated ", updatedCustomers);
+
     setCustomers(updatedCustomers);
   };
 
@@ -94,7 +93,7 @@ const Customers = () => {
       const response = await axios.get(
         `http://localhost:9080/customer/getAll/${laundryName}`
       );
-      console.log(response.data);
+
       const customersData = response.data;
       customersAdapter(customersData);
     } catch (error) {
@@ -128,7 +127,7 @@ const Customers = () => {
       setCustomer.isGold = data.gold;
       toSet.push(setCustomer);
     }
-    console.log("toSet from customer adapter", toSet);
+
     setCustomers(toSet);
   };
 
@@ -243,25 +242,6 @@ const Customers = () => {
                       <td>{customer.isGold ? "Yes" : "No"}</td>
 
                       <td>
-                        {/* <button
-                          className="btn btn-success btn-sm"
-                          // data-bs-target="#UpdateOrderModal"
-                          //style={{ marginRight: "15px" }}
-                          style={{
-                            marginRight: "15px",
-                            backgroundColor: "green",
-                            borderColor: "green",
-                          }}
-                          //   onClick={() => {
-                          //     console.log(
-                          //       "on click update selected order ID: ",
-                          //       order.ID
-                          //     );
-                          //     handleShowUpdateOrderModal(order);
-                          //   }}
-                        >
-                          Update
-                        </button> */}
                         <button
                           className="btn btn-success btn-sm"
                           data-bs-toggle="modal"

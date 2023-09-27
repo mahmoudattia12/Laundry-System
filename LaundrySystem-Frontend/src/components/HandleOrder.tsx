@@ -58,7 +58,6 @@ const HandleOrder = ({
 
   useEffect(() => {
     if (isUpdate && oldOrder) {
-      console.log("hi from update useeffect and selected oreder:", oldOrder);
       setOrderItems(oldOrder.items || []);
       setOrderNotes(oldOrder.notes || []);
       setFormData({
@@ -193,7 +192,6 @@ const HandleOrder = ({
     if (!formData.endDateTime || isNaN(Date.parse(formData.endDateTime))) {
       errors.endDateTime = "End Date Time is required";
     }
-    console.log(errors.startDateTime, " & ", errors.endDateTime);
     setFormErrors(errors);
 
     return Object.keys(errors).length === 0;
@@ -234,47 +232,37 @@ const HandleOrder = ({
       var toSent: any = {};
       toSent = formData;
       toSent.laundryName = laundryName;
-      console.log(toSent);
-      console.log(orderNotes);
-      console.log(orderItems);
+
       if (!isUpdate) {
         try {
           const response = await axios.post(
             `http://localhost:9080/order/add`,
             toSent
           );
-          console.log("add order response : ", response.data);
           if (isNumeric(response.data.id)) {
             const orderID: number = Number(response.data.id);
-            console.log("orderID ", orderID);
 
             //order added let's add its notes & items
 
             var responseData = "";
             if (orderNotes.length > 0) {
-              console.log(orderNotes);
               const notesResponse = await axios.post(
                 `http://localhost:9080/order/addNotes?orderID=${orderID}`,
                 orderNotes
               );
               responseData = notesResponse.data;
             }
-            console.log("notes response: ", responseData);
+
             if (responseData === "" || typeof responseData !== "string") {
               //add items
-              console.log("order items  ", orderItems);
 
               const itemsResponse = await axios.post(
                 `http://localhost:9080/order/addItems?orderID=${orderID}`,
                 orderItems
               );
-              console.log("items Responseeee ", itemsResponse);
+
               if (typeof itemsResponse.data !== "string") {
-                console.log("the whole order is added");
                 //the whole order is added
-                console.log("the returned order ", response.data);
-                console.log("the returned notes ", responseData);
-                console.log("the returned items " + itemsResponse.data);
 
                 const setOrder: any = {};
                 setOrder.ID = response.data.id;
@@ -319,21 +307,16 @@ const HandleOrder = ({
           alert(error);
         }
       } else {
-        console.log("update handle clicked");
         oldOrder?.ID !== undefined ? (toSent.ID = oldOrder.ID) : "";
         toSent.items = orderItems;
         toSent.notes = orderNotes;
 
-        console.log("update to sent: ", toSent);
-
-        console.log("orderID", toSent.ID);
         if (toSent.ID) {
           try {
             const response = await axios.put(
               `http://localhost:9080/order/update/${toSent.ID}`,
               toSent
             );
-            console.log("update response : -- ", response.data);
 
             if (typeof response.data !== "string") {
               const setOrder: any = {};

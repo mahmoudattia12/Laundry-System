@@ -107,11 +107,10 @@ const Orders = () => {
       const response = await axios.get(
         `http://localhost:9080/order/getAll/${laundryName}`
       );
-      console.log(response.data);
+
       const ordersData = response.data;
       ordersAdapter(ordersData);
     } catch (error) {
-      console.error("Error fetching orders:", error);
       alert("Error fetching orders");
     }
   };
@@ -151,7 +150,7 @@ const Orders = () => {
       setOrder.notes = data.order.notesMessages;
       toSet.push(setOrder);
     }
-    console.log("toSet from orders adapter", toSet);
+
     setOrders(toSet);
   };
 
@@ -297,10 +296,6 @@ const Orders = () => {
                             borderColor: "green",
                           }}
                           onClick={() => {
-                            console.log(
-                              "on click update selected order ID: ",
-                              order.ID
-                            );
                             handleShowUpdateOrderModal(order);
                           }}
                         >

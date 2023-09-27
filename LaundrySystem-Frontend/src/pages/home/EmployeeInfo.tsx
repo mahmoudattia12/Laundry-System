@@ -42,7 +42,7 @@ const EmployeeInfo = () => {
       const response = await axios.get(
         `http://localhost:9080/emp/getAll/${laundryName}/${empUserName}/empInfo`
       );
-      console.log(response.data);
+
       const data = response.data;
       empAdapter(data);
     } catch (error) {
@@ -65,7 +65,7 @@ const EmployeeInfo = () => {
       setEmp.endShiftTime = data.endShiftTime ? data.endShiftTime : null;
       toSet.push(setEmp);
     }
-    console.log("toSet from emp adapter", toSet);
+
     setEmployees(toSet);
   };
 

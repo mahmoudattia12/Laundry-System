@@ -40,8 +40,6 @@ const HandleCustomer = ({
 
   useEffect(() => {
     if (!isAdd && oldCustomer) {
-      console.log("hi from update use effect");
-      console.log("old customer", oldCustomer);
       setFormData({
         phoneNumber: "",
         email: oldCustomer.email,
@@ -74,8 +72,6 @@ const HandleCustomer = ({
   };
 
   const validateForm = () => {
-    console.log("hi from validate form");
-    console.log("isUpdate ", !isAdd);
     let valid = true;
     const errors: any = {};
 
@@ -116,24 +112,21 @@ const HandleCustomer = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("is valid: ", validateForm());
+
     if (validateForm()) {
-      console.log(customerData);
       const toSend: any = {};
       toSend.name = customerData.name.trim();
       toSend.address = customerData.address.trim();
       toSend.email = customerData.email.trim();
       if (isAdd) {
-        console.log("hi from add is customer page >>>> ", isCustomersPage);
         toSend.phoneNumber = customerData.phoneNumber;
-        console.log(toSend);
 
         try {
           const response = await axios.post(
             `http://localhost:9080/customer/add?laundryName=${laundryName}`,
             toSend
           );
-          console.log(response.data);
+
           if (response.data === "SUCCESS") {
             alert(response.data);
             const modalElement = document.getElementById(id);
@@ -157,7 +150,7 @@ const HandleCustomer = ({
                 totalPays: 0,
                 isGold: false,
               };
-              console.log("hi just before using the onSuccess to send", toAdd);
+
               onSuccess(toAdd);
             }
 
@@ -177,10 +170,7 @@ const HandleCustomer = ({
           alert(error);
         }
       } else {
-        console.log("update customer is clicked and validated");
-        console.log(customerData);
         toSend.phoneNumber = oldCustomer?.phoneNumber;
-        console.log("toSend", toSend);
 
         if (toSend.phoneNumber) {
           try {
@@ -188,7 +178,6 @@ const HandleCustomer = ({
               `http://localhost:9080/customer/update/${toSend.phoneNumber}`,
               toSend
             );
-            console.log(response.data);
             if (response.data === "SUCCESS") {
               alert(response.data);
               const modalElement = document.getElementById(id);

@@ -71,7 +71,6 @@ const Employees = () => {
   };
 
   const handleEmployeeSuccessUpdate = (updatedEmployee: Employee) => {
-    console.log("hi from emp success update, ", updatedEmployee);
     const prevID: string = updatedEmployee.userName;
 
     const updatedEmps = employees.map((emp) => {
@@ -89,7 +88,7 @@ const Employees = () => {
       const response = await axios.get(
         `http://localhost:9080/emp/getAll/${laundryName}/${empUserName}/emps`
       );
-      console.log(response.data);
+
       if (
         response.data !== "" &&
         response.data !== null &&
@@ -139,7 +138,7 @@ const Employees = () => {
       setEmp.endShiftTime = data.endShiftTime ? data.endShiftTime : null;
       toSet.push(setEmp);
     }
-    console.log("toSet from emp adapter", toSet);
+
     setEmployees(toSet);
   };
 

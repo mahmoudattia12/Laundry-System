@@ -11,7 +11,6 @@ const EmpLogin = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const laundryName = searchParams.get("laundryName");
-  console.log("hi from login    ", laundryName);
 
   const [formData, setFormData] = useState({
     userName: "",
@@ -66,17 +65,16 @@ const EmpLogin = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log(formData);
       const toSent: any = {};
       toSent.userName = formData.userName.trim();
       toSent.password = formData.password;
-      console.log(toSent);
+
       try {
         const response = await axios.post(
           `http://localhost:9080/emp/login?laundryName=${laundryName}`,
           toSent
         );
-        console.log(response.data);
+
         if (response.data === "SUCCESS") {
           navigate("/Orders", {
             state: {

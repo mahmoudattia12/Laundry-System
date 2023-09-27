@@ -18,7 +18,7 @@ const LaundryLogin = () => {
     passwordError: "",
   });
 
-  const [showPassword, setShowPassword] = useState(false); // State to show/hide password
+  const [showPassword, setShowPassword] = useState(false);
 
   const validateForm = () => {
     let valid = true;
@@ -62,18 +62,17 @@ const LaundryLogin = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log(formData);
       const toSent: any = {};
       toSent.name = formData.name.trim();
       toSent.password = formData.password;
       // setFormData(toSent);
-      console.log(toSent);
+
       try {
         const response = await axios.post(
           "http://localhost:9080/laundry/login",
           toSent
         );
-        console.log(response.data);
+
         if (response.data === "SUCCESS") {
           navigate("/employeeSignup", {
             state: {

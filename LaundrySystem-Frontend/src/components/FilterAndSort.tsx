@@ -50,10 +50,6 @@ const FilterAndSort = ({
         sendToMeet += ":00.000000";
       }
 
-      console.log(entityName);
-      console.log(criteria);
-      console.log(sendToMeet);
-      console.log(laundryName);
       if (sendToMeet === "") {
         alert("please enter the value you want to search/filter");
       } else {
@@ -61,8 +57,6 @@ const FilterAndSort = ({
         const response = await axios.get(
           `http://localhost:9080/filterEntity/${toSendEntity}/${criteria}/${sendToMeet}/${laundryName}`
         );
-
-        console.log("Filtered List:", response.data);
 
         adapter(response.data);
       }
@@ -75,15 +69,12 @@ const FilterAndSort = ({
   const sortOrders = async () => {
     try {
       const isAsc = selectedSortingOrder === "asc" ? true : false;
-      console.log(entityName);
-      console.log(selectedSort);
-      console.log(isAsc);
-      console.log(laundryName);
+
       const toSendEntity = entityName === "empInfo" ? "emp" : entityName;
       const response = await axios.get(
         `http://localhost:9080/sortEntity/${toSendEntity}/${selectedSort}/${isAsc}/${laundryName}`
       );
-      console.log("sorted data: ", response.data);
+
       adapter(response.data);
     } catch (error) {
       console.error("Error sorting list:", error);
