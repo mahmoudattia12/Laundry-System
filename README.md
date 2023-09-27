@@ -51,6 +51,4 @@ It was used for the Order and Customer entities To convert a list of Orders/Cust
 - [link to the uml class diagram](https://drive.google.com/file/d/1ocEMtN3ttcIXc5rS1hyM8YQyvSVRSCQm/view?usp=sharing)
 ---
 ## Demo Video for using the app:
-
-
-
+https://github.com/mahmoudattia12/Laundry-System/assets/96799025/98acc27e-e908-4362-a22f-fc8ef5ddd99c
