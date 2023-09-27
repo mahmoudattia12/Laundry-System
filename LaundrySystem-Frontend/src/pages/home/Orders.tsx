@@ -5,15 +5,11 @@ import HandleOrder, { OrderItem } from "../../components/HandleOrder";
 import { useLocation } from "react-router-dom";
 import OrderDetailsModal from "../../components/OrderDetailsModal";
 import axios from "axios";
+import FilterAndSort from "../../components/FilterAndSort";
+import { Customer } from "./Customers";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMagnifyingGlass,
-  faSort,
-  faFilter,
-  faFilePen,
-  faPlus,
-  faRotate,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFilePen, faPlus, faRotate } from "@fortawesome/free-solid-svg-icons";
 
 export interface Order {
   ID: number;
@@ -36,32 +32,28 @@ const Orders = () => {
   const [showUpdateOrderModal, setShowUpdateOrderModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [showOrderDetailsModal, setShowOrderDetailsModal] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState("customerName");
-  const [toMeetFilter, setToMeetFilter] = useState("");
-  const [toMeetSearch, setToMeetSearch] = useState("");
-  const [selectedSort, setSelectedSort] = useState("customerName");
-  const [selectedSortingOrder, setSelectedSortingOrder] = useState("asc");
 
   const location = useLocation();
   var { laundryName, empUserName } = location.state || {};
 
-  const [orders, setOrders] = useState<Order[]>([
-    // {
-    //   id: 1,
-    //   customerName: "Aly Said",
-    //   customerPhone: "01204191992",
-    //   customerAddress: "500 staskskanskaknaskak",
-    //   alternatePhone: "01204191992",
-    //   startDateTime: "2023-09-21 04:48:00",
-    //   dueDateTime: "2023-09-22 04:48:00",
-    //   totalPrice: 50.5,
-    //   isPaid: false,
-    //   isDelivery: true,
-    //   currState: "in progress",
-    //   items: [],
-    //   notes: [],
-    // },
-  ]);
+  const searchParams = new URLSearchParams(location.search);
+  const holdLaundryName = searchParams.get("laundryName");
+  const holdEmpName = searchParams.get("employeeName");
+
+  // if (laundryName === "") {
+  laundryName =
+    holdLaundryName === null || holdLaundryName === undefined
+      ? laundryName
+      : holdLaundryName;
+  // }
+  // if (empUserName === "") {
+  empUserName =
+    holdEmpName === null || holdEmpName === undefined
+      ? empUserName
+      : holdEmpName;
+  // }
+
+  const [orders, setOrders] = useState<Order[]>([]);
 
   const handleOrderSuccessCreation = (toAddOrder: Order) => {
     const toSet: any[] = orders;
@@ -132,48 +124,11 @@ const Orders = () => {
       if (response.data === "SUCCESS") {
         const updatedOrders = orders.filter((order) => order.ID !== orderID);
         setOrders(updatedOrders);
+      } else {
+        alert(response.data);
       }
     } catch (error) {
-      console.error("Error fetching orders:", error);
-      alert("Error fetching orders");
-    }
-  };
-
-  const filterOrders = async (isFilter: boolean) => {
-    try {
-      var criteria, toMeet;
-      isFilter
-        ? ((criteria = selectedFilter), (toMeet = toMeetFilter))
-        : ((criteria = "search"), (toMeet = toMeetSearch));
-
-      if (criteria === "isDelivery" || criteria === "isPaid") {
-        if (toMeet.toLocaleLowerCase() === "yes") setToMeetFilter("true");
-        else if (toMeet.toLocaleLowerCase() === "no") setToMeetFilter("false");
-      }
-
-      const response = await axios.get(
-        `http://localhost:9080/filterEntity/ord/${criteria}/${toMeet}/${laundryName}`
-      );
-
-      console.log("Filtered Orders:", response.data);
-
-      ordersAdapter(response.data);
-    } catch (error) {
-      console.error("Error filtering orders:", error);
-      alert("Error filtering orders");
-    }
-  };
-  const sortOrders = async () => {
-    try {
-      const isAsc = selectedSortingOrder === "asc" ? true : false;
-      const response = await axios.get(
-        `http://localhost:9080/sortEntity/ord/${selectedSort}/${isAsc}/${laundryName}`
-      );
-      console.log("sorted data", response.data);
-      ordersAdapter(response.data);
-    } catch (error) {
-      console.error("Error sorting orders:", error);
-      alert("Error sorting orders");
+      alert(error);
     }
   };
 
@@ -212,184 +167,30 @@ const Orders = () => {
           "linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%)",
       }}
     >
-      {/* Left Sidebar (NavBar) */}
       <NavBar
         employeeName={empUserName}
         laundryName={laundryName}
         containerPage="orders"
       />
 
-      {/* Right Content */}
       <div className="container mt-4">
-        <div>
-          <div className="row">
-            <div className="col-md-4 col-lg-5">
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search..."
-                  value={toMeetSearch}
-                  onChange={(e) => setToMeetSearch(e.target.value)}
-                />
-                <button
-                  className="btn btn-outline-secondary"
-                  type="button"
-                  onClick={() => {
-                    filterOrders(false);
-                  }}
-                >
-                  <FontAwesomeIcon
-                    icon={faMagnifyingGlass}
-                    className="fs-3 mr-2"
-                    style={{ marginRight: "8px" }}
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
+        <FilterAndSort
+          entityName="ord"
+          laundryName={laundryName}
+          initialSelected="customerName"
+          adapter={ordersAdapter}
+        />
 
-          <div className="row mt-4">
-            <div
-              className="col-md-4 col-lg-1 "
-              style={{
-                verticalAlign: "center",
-                marginRight: "-20px",
-                marginTop: "5px",
-                alignContent: "center",
-              }}
-            >
-              <span className="mt-2">Filter by:</span>
-            </div>
-            <div
-              className="col-md-4 col-lg-1 mt-2 mt-md-0"
-              style={{ margin: "0", padding: "2px", minWidth: "170px" }}
-            >
-              <select
-                className="form-select"
-                value={selectedFilter}
-                onChange={(e) => setSelectedFilter(e.target.value)}
-              >
-                <option value="customerName">Customer Name</option>
-                <option value="customerPhone">Customer Phone</option>
-                <option value="alternatePhone">Alternate Phone</option>
-                {/* <option value="startDate">Start Date</option>
-                <option value="endDate">End Date</option> better in searching*/}
-                <option value="price">Total Price</option>
-                <option value="isDelivery">Is Delivery</option>
-                <option value="isPaid">Is Paid</option>
-                <option value="currState">Current State</option>
-              </select>
-            </div>
-            <div
-              className="col-md-4 col-lg-3 mt-2 mt-md-0"
-              style={{ margin: "0", padding: "2px" }}
-            >
-              <input
-                type="text"
-                className="form-control"
-                placeholder={
-                  selectedFilter === "startDate"
-                    ? "YYYY-MM-DD HH:mm:ss"
-                    : selectedFilter === "endDate"
-                    ? "YYYY-MM-DD HH:mm:ss"
-                    : selectedFilter === "isDelivery"
-                    ? "yes/no"
-                    : selectedFilter === "isPaid"
-                    ? "yes/no"
-                    : selectedFilter === "currState"
-                    ? "new/inprogress/finished/delivered"
-                    : "Enter filter value..."
-                }
-                value={toMeetFilter}
-                onChange={(e) => setToMeetFilter(e.target.value)}
-              />
-            </div>
-            <div
-              className="col-md-2 col-lg-1 mt-2 mt-md-0"
-              style={{ margin: "0", padding: "2px" }}
-            >
-              <button
-                className="btn btn-primary"
-                type="button"
-                onClick={() => {
-                  filterOrders(true);
-                }}
-              >
-                Filter
-              </button>
-            </div>
-
-            <div
-              className="col-md-4 col-lg-1 "
-              style={{
-                verticalAlign: "center",
-                marginRight: "-20px",
-                marginLeft: "50px",
-                marginTop: "5px",
-                alignContent: "center",
-              }}
-              // style={{ margin: "0", padding: "2px" }}
-            >
-              <span className="mt-2">Sort by:</span>
-            </div>
-            <div
-              className="col-md-8 col-lg-1 mt-0 mt-md-0"
-              style={{ margin: "0", padding: "2px", minWidth: "170px" }}
-            >
-              <select
-                className="form-select"
-                style={{ margin: "0" }}
-                value={selectedSort}
-                onChange={(e) => setSelectedSort(e.target.value)}
-              >
-                <option value="customerName">Customer Name</option>
-                <option value="customerPhone">Customer Phone</option>
-                <option value="alternatePhone">Alternate Phone</option>
-                <option value="startDate">Start Date</option>
-                <option value="endDate">End Date</option>
-                <option value="price">Total Price</option>
-                <option value="isDelivery">Is Delivery</option>
-                <option value="isPaid">Is Paid</option>
-                <option value="currState">Current State</option>
-              </select>
-            </div>
-            <div
-              className="col-md-3 col-lg-1 mt-0 mt-md-0"
-              style={{ margin: "0", padding: "2px", minWidth: "135px" }}
-            >
-              <select
-                className="form-select"
-                style={{ margin: "0" }}
-                value={selectedSortingOrder}
-                onChange={(e) => setSelectedSortingOrder(e.target.value)}
-              >
-                <option value="asc">Ascending</option>
-                <option value="desc">Descending</option>
-              </select>
-            </div>
-            <div
-              className="col-md-2 col-lg-1 mt-2 mt-md-0"
-              style={{ margin: "0", padding: "2px" }}
-            >
-              <button
-                className="btn btn-primary"
-                type="button"
-                onClick={() => {
-                  sortOrders();
-                }}
-              >
-                Sort
-              </button>
-            </div>
-          </div>
-        </div>
         <hr className="my-3 custom-line" />
         <div className="row">
           <div className="justify-content-start col-3 d-flex">
             <button
-              className="btn btn-primary btn-block ms-0"
-              style={{ backgroundColor: "green", borderColor: "green" }}
+              className="green-button btn-block ms-0"
+              // style={{
+              //   backgroundColor: "green",
+              //   borderColor: "green",
+              //   transition: "background-color 0.9s",
+              // }}
               // data-bs-target="#CreateOrderModal"
               onClick={handleShowCreateOrderModal}
             >
@@ -401,10 +202,14 @@ const Orders = () => {
               Create Order
             </button>
             <button
-              className="btn btn-primary btn-block ms-1"
+              className="green-button btn-block ms-1"
               data-bs-toggle="modal"
               data-bs-target="#addCustomerModal"
-              style={{ backgroundColor: "green", borderColor: "green" }}
+              // style={{
+              //   backgroundColor: "green",
+              //   borderColor: "green",
+              //   transition: "background-color 0.3s",
+              // }}
             >
               <FontAwesomeIcon
                 icon={faPlus}
@@ -463,7 +268,6 @@ const Orders = () => {
                     <tr
                       key={order.ID}
                       onClick={(e) => {
-                        // Check if the click target is the delete button
                         if (
                           (e.target as HTMLElement).tagName.toLowerCase() !==
                           "button"
@@ -553,6 +357,9 @@ const Orders = () => {
         header="Add Customer"
         isAdd={true}
         laundryName={laundryName}
+        onClose={() => {}}
+        onSuccess={(customer: Customer) => {}}
+        isCustomersPage={false}
       />
     </div>
   );

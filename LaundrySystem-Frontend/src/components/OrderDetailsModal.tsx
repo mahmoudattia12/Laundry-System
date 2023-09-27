@@ -9,11 +9,7 @@ interface OrderDetailsModalProps {
   onHide: () => void;
 }
 
-const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
-  show,
-  order,
-  onHide,
-}) => {
+const OrderDetailsModal = ({ show, order, onHide }: OrderDetailsModalProps) => {
   return (
     <Modal show={show} onHide={onHide} size="lg">
       <Modal.Header closeButton>

@@ -43,11 +43,8 @@ const HandleOrder = ({
       quantity: 0,
     },
   ]);
-
-  // Initialize the orderNotes state
   const [orderNotes, setOrderNotes] = useState<string[]>([]);
 
-  // Initialize the formData state
   const [formData, setFormData] = useState({
     totalPrice: 0,
     customerPhone: "",
@@ -59,9 +56,9 @@ const HandleOrder = ({
     isPaid: "false",
   });
 
-  // Use useEffect to update state based on isUpdate and oldOrder
   useEffect(() => {
     if (isUpdate && oldOrder) {
+      console.log("hi from update useeffect and selected oreder:", oldOrder);
       setOrderItems(oldOrder.items || []);
       setOrderNotes(oldOrder.notes || []);
       setFormData({
@@ -203,12 +200,10 @@ const HandleOrder = ({
   };
 
   function isNumeric(str: string): boolean {
-    // Use the "+" operator to attempt conversion
     const numericValue = +str;
-
-    // Check if the conversion result is a finite number
     return !isNaN(numericValue) && isFinite(numericValue);
   }
+
   const resetWindow = () => {
     setFormData({
       totalPrice: 0,
@@ -395,7 +390,19 @@ const HandleOrder = ({
                     <InputGroup>
                       <Form.Control
                         as="select"
-                        value={item.type}
+                        value={
+                          item.type !== "suit" &&
+                          item.type !== "shirt" &&
+                          item.type !== "t-shirt" &&
+                          item.type !== "sweater" &&
+                          item.type !== "jacket" &&
+                          item.type !== "coat" &&
+                          item.type !== "jeans" &&
+                          item.type !== "pajamas" &&
+                          item.type !== "carpet"
+                            ? "other"
+                            : item.type
+                        }
                         onChange={(e) =>
                           handleChange(index, "type", e.target.value)
                         }
@@ -411,11 +418,24 @@ const HandleOrder = ({
                         <option value="carpet">Carpet</option>
                         <option value="other">Other</option>
                       </Form.Control>
-                      {item.type === "other" && (
+                      {(item.type === "other" ||
+                        (item.type !== "suit" &&
+                          item.type !== "shirt" &&
+                          item.type !== "t-shirt" &&
+                          item.type !== "sweater" &&
+                          item.type !== "jacket" &&
+                          item.type !== "coat" &&
+                          item.type !== "jeans" &&
+                          item.type !== "pajamas" &&
+                          item.type !== "carpet")) && (
                         <FormControl
                           type="text"
                           placeholder="Enter the type"
-                          value={item.customType || ""}
+                          value={
+                            item.type !== "other"
+                              ? item.type
+                              : item.customType || ""
+                          }
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             handleChange(index, "customType", e.target.value)
                           }
@@ -435,7 +455,13 @@ const HandleOrder = ({
                     <InputGroup>
                       <Form.Control
                         as="select"
-                        value={item.serviceCategory}
+                        value={
+                          item.serviceCategory !== "dryCleaning" &&
+                          item.serviceCategory !== "normalWashing" &&
+                          item.serviceCategory !== "ironing"
+                            ? "other"
+                            : item.serviceCategory
+                        }
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                           handleChange(index, "serviceCategory", e.target.value)
                         }
@@ -445,11 +471,18 @@ const HandleOrder = ({
                         <option value="ironing">Ironing</option>
                         <option value="other">Other</option>
                       </Form.Control>
-                      {item.serviceCategory === "other" && (
+                      {(item.serviceCategory === "other" ||
+                        (item.serviceCategory !== "dryCleaning" &&
+                          item.serviceCategory !== "normalWashing" &&
+                          item.serviceCategory !== "ironing")) && (
                         <FormControl
                           type="text"
                           placeholder="Enter the service"
-                          value={item.customService || ""}
+                          value={
+                            item.serviceCategory !== "other"
+                              ? item.serviceCategory
+                              : item.customService || ""
+                          }
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             handleChange(index, "customService", e.target.value)
                           }

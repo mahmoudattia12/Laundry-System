@@ -99,3 +99,19 @@ tr.hover-bg-gray:hover {
 .custom-margin {
   margin: -6; /* Remove default margin */
 }
+
+.green-button {
+  height: 60px;
+  display: block;
+  font-weight: bold;
+  margin: 0 auto;
+  border-radius: 7px;
+  color: white;
+  background-color: green;
+  border-color: green;
+}
+
+.green-button:hover {
+  background-color: rgb(31, 169, 31);
+  border-color: rgb(31, 169, 31);
+}
