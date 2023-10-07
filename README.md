@@ -43,7 +43,7 @@ It was used for the Order and Customer entities To convert a list of Orders/Cust
 - Model (Database): The "Model" represents the data and the business logic of the application. In the context of a web application with a MySQL database, the Model corresponds to the database itself and the data stored within it. It includes the tables, entities, and relationships within the database schema. The backend (Controller) interacts with the Model (database) to perform CRUD (Create, Read, Update, Delete) operations, retrieve data, and maintain data integrity.
 ---
 ## Design Diagrams:
-### Entity Relationship diagram:
+### Entity Relationship (ER) Model:
 ![Laundry ER diagram](https://github.com/mahmoudattia12/Laundry-System/assets/96799025/b03d7b21-13c8-42e6-b990-eccd75de938c)
 ### Relational database tables:
 ![LaundrySystem Relational database tables](https://github.com/mahmoudattia12/Laundry-System/assets/96799025/5a5efb47-a8b6-4837-9727-7678fdaf6a0f)
